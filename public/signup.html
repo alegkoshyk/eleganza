@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Create account · Eleganza</title>
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="menu-btn" id="openDrawer" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="logo-name">Eleganza</span></a>
+    <nav class="topnav"><a href="/">Home</a><a href="/#solution">Solution</a><a href="/#pricing">Pricing</a><a href="/studio/">Studio</a><a href="/app/projects.html">App demo</a></nav>
+    <div class="spacer"></div>
+    <a class="ghost" href="/login.html">Sign in</a>
+  </div>
+</header>
+
+<main class="auth-shell">
+  <form class="auth-card" onsubmit="event.preventDefault();window.location='/app/projects.html'">
+    <div>
+      <h1>Create your showroom</h1>
+      <p class="sub">20 free generation tokens. No credit card required.</p>
+    </div>
+
+    <div class="social-row">
+      <button class="btn" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.35 11.1H12v3.2h5.35c-.23 1.4-1.6 4.1-5.35 4.1-3.22 0-5.85-2.65-5.85-5.9s2.63-5.9 5.85-5.9c1.83 0 3.05.78 3.75 1.45L17.85 5.6C16.4 4.25 14.45 3.5 12 3.5 6.75 3.5 2.5 7.75 2.5 13s4.25 9.5 9.5 9.5c5.5 0 9.1-3.85 9.1-9.3 0-.62-.05-1.1-.15-1.6z"/></svg>Google</button>
+      <button class="btn" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 1.4c0 1.1-.5 2.2-1.3 3-.9.8-2.2 1.5-3.4 1.4-.1-1.1.4-2.2 1.2-3 .8-.9 2.2-1.5 3.5-1.4zM20 17.4c-.5 1.1-.8 1.6-1.4 2.6-.9 1.4-2.2 3.1-3.8 3.1-1.4 0-1.8-.9-3.8-.9s-2.4.9-3.8.9c-1.6 0-2.8-1.6-3.7-2.9-2.5-3.7-2.8-8-1.2-10.3 1.1-1.6 2.9-2.6 4.6-2.6 1.7 0 2.8.9 4.2.9 1.4 0 2.2-.9 4.2-.9 1.5 0 3.1.8 4.2 2.2-3.7 2-3.1 7.3.5 7.9z"/></svg>Apple</button>
+    </div>
+
+    <div class="divider">or with email</div>
+
+    <div class="field">
+      <label>Showroom name</label>
+      <input type="text" placeholder="Studio Milano" required>
+    </div>
+    <div class="field">
+      <label>Country</label>
+      <select required>
+        <option>Italy</option><option>Germany</option><option>France</option><option>Spain</option><option>United Kingdom</option><option>Ukraine</option><option>United States</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Work email</label>
+      <input type="email" placeholder="maria@studio-milano.it" required>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" placeholder="At least 8 characters" required>
+      <div class="hint">Must include 1 uppercase, 1 number and 1 symbol.</div>
+    </div>
+
+    <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text-2)">
+      <input type="checkbox" required style="margin-top:3px">
+      I agree to the <a href="#" style="color:var(--gold)">Terms of Service</a> and <a href="#" style="color:var(--gold)">Privacy Policy</a>.
+    </label>
+
+    <button class="btn btn-primary btn-block" style="padding:14px" type="submit">Create account · Get 20 tokens</button>
+
+    <div class="auth-foot">
+      Already have an account? <a href="/login.html">Sign in</a>
+    </div>
+  </form>
+</main>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="logo-name">Eleganza</span></div>
+      <button class="menu-btn" id="closeDrawer">×</button>
+    </div>
+    <a class="nav-item" href="/">Home</a>
+    <a class="nav-item" href="/login.html">Sign in</a>
+    <a class="nav-item" href="/app/projects.html">App demo</a>
+  </div>
+</div>
+
+<script src="/assets/app.js"></script>
+</body>
+</html>

@@ -12,6 +12,7 @@ services:
       - "traefik.http.routers.eleganza.rule=Host(`eleganza.redcats.uk`)"
       - "traefik.http.routers.eleganza.entrypoints=websecure"
       - "traefik.http.routers.eleganza.tls=true"
+      - "traefik.http.routers.eleganza.tls.certresolver=letsencrypt"
       - "traefik.http.services.eleganza.loadbalancer.server.port=80"
 
 networks:

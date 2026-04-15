@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Studio · Eleganza</title>
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Original Eleganza flow — upload a room photo, AI suggests products, generate a visualization.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="menu-btn" id="openDrawer" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="logo-name">Eleganza</span></a>
+    <nav class="topnav"><a href="/">Home</a><a href="/#solution">Solution</a><a href="/#pricing">Pricing</a><a href="/studio/" class="active">Studio</a><a href="/app/projects.html">App demo</a></nav>
+    <div class="spacer"></div>
+    <a class="ghost" href="/login.html">Sign in</a>
+    <a class="btn btn-primary" href="/signup.html">Try for free</a>
+  </div>
+</header>
+
+<div class="studio">
+<div class="studio-main">
+
+  <!-- Stepper -->
+  <div class="stepper" id="stepper" role="navigation" aria-label="Progress">
+    <div class="step current" data-go="1"><div class="step-dot">1</div><div class="step-label">Upload</div></div>
+    <div class="step-bar"></div>
+    <div class="step" data-go="2"><div class="step-dot">2</div><div class="step-label">Analyze</div></div>
+    <div class="step-bar"></div>
+    <div class="step" data-go="3"><div class="step-dot">3</div><div class="step-label">Select</div></div>
+    <div class="step-bar"></div>
+    <div class="step" data-go="5"><div class="step-dot">4</div><div class="step-label">Generate</div></div>
+  </div>
+
+  <!-- Screen 1 · Upload -->
+  <section class="screen active" data-step="1">
+    <div class="card">
+      <h2 style="margin:0 0 14px;text-align:center;font-size:17px">Upload a room photo</h2>
+      <div style="margin:6px auto 14px;width:120px;height:92px;border-radius:18px;background:var(--surface);border:1px dashed var(--border-strong);display:grid;place-items:center;color:var(--text-3);overflow:hidden">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5-6 6-3-3-4 4"/></svg>
+      </div>
+      <p style="text-align:center;color:var(--text-2);font-size:13px;margin:0">AI will detect furniture and suggest matching products from partner stores</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px">
+        <button class="btn" type="button" id="openCamera"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Camera</button>
+        <label class="btn" for="fileInput"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5-6 6-3-3-4 4"/></svg>Gallery</label>
+        <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+      </div>
+      <div style="margin-top:12px;text-align:center;font-size:11px;color:var(--text-3);letter-spacing:.3px">JPEG, PNG, WebP · max 20 MB</div>
+      <div style="margin-top:14px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--text-2);font-size:13px">
+        <div class="switch" role="switch"></div>
+        <span>Extended search</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:0 0 10px"><h3 style="margin:0;font-size:14px;font-weight:500;color:var(--text-2)">Search in stores</h3><button type="button" style="color:var(--gold);font-size:13px;font-weight:500">Select all</button></div>
+      <div class="chip-row">
+        <button class="chip active">Blest</button>
+        <button class="chip">Agromat</button>
+        <button class="chip">Poltrona</button>
+        <button class="chip">Kis</button>
+        <button class="chip">Tanguay</button>
+      </div>
+      <h3 style="margin:20px 2px 10px;font-size:14px;font-weight:500;color:var(--text-2)">How it works</h3>
+      <ol style="list-style:none;padding:0;margin:0;display:grid;gap:14px">
+        <li style="display:grid;grid-template-columns:28px 1fr;align-items:center;gap:12px;font-size:14px;color:var(--text-2)"><span style="width:28px;height:28px;border-radius:50%;background:var(--gold-soft);color:var(--gold);display:grid;place-items:center;font-size:13px;font-weight:600">1</span>Upload room photo</li>
+        <li style="display:grid;grid-template-columns:28px 1fr;align-items:center;gap:12px;font-size:14px;color:var(--text-2)"><span style="width:28px;height:28px;border-radius:50%;background:var(--gold-soft);color:var(--gold);display:grid;place-items:center;font-size:13px;font-weight:600">2</span>AI detects furniture</li>
+        <li style="display:grid;grid-template-columns:28px 1fr;align-items:center;gap:12px;font-size:14px;color:var(--text-2)"><span style="width:28px;height:28px;border-radius:50%;background:var(--gold-soft);color:var(--gold);display:grid;place-items:center;font-size:13px;font-weight:600">3</span>Select matching products</li>
+        <li style="display:grid;grid-template-columns:28px 1fr;align-items:center;gap:12px;font-size:14px;color:var(--text-2)"><span style="width:28px;height:28px;border-radius:50%;background:var(--gold-soft);color:var(--gold);display:grid;place-items:center;font-size:13px;font-weight:600">4</span>Generate visualization</li>
+      </ol>
+    </div>
+
+    <button class="btn btn-primary btn-block" style="padding:16px" data-next="2">Start analysis</button>
+  </section>
+
+  <!-- Screen 2 · Analyzing -->
+  <section class="screen" data-step="2">
+    <div class="card" style="padding:18px">
+      <div class="analyze-stage">
+        <svg class="sparkle" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>
+        <div style="font-weight:600;font-size:17px">Classifying furniture…</div>
+        <div id="analyzeStep" style="color:var(--text-3);font-size:13px">Step 2 of 3</div>
+      </div>
+      <div class="progress-section" style="margin-top:10px">
+        <div class="progress-head"><span>Classifying furniture</span><span id="analyzePct">60%</span></div>
+        <div class="progress-bar"><span id="analyzeBar" style="width:60%"></span></div>
+      </div>
+    </div>
+    <div class="status-row">
+      <div class="status-chip done"><div class="t">Detecting objects</div><div class="s">✓ Done</div></div>
+      <div class="status-chip active"><div class="t">Classifying furniture</div><div class="s">✓ Done</div></div>
+      <div class="status-chip"><div class="t">Matching products</div><div class="s">Pending</div></div>
+    </div>
+    <button class="btn btn-block" style="padding:16px" data-next="1">Cancel</button>
+  </section>
+
+  <!-- Screen 3 · Results -->
+  <section class="screen" data-step="3">
+    <div class="image-stage">
+      <img src="https://picsum.photos/seed/eleganza-studio-living/1200/750" alt="">
+      <button class="iconbtn" style="position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.55);color:var(--text);display:grid;place-items:center;backdrop-filter:blur(6px);z-index:2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l4-5h10l4 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 9h18"/></svg>
+      </button>
+      <div class="marker" style="left:28%;top:40%">+</div>
+      <div class="marker" style="left:56%;top:55%">·</div>
+      <div class="marker" style="left:72%;top:38%">·</div>
+      <div class="marker" style="left:85%;top:30%">·</div>
+      <div class="corner-tags">
+        <span class="tag">living_room</span>
+        <span class="tag">modern</span>
+        <span class="tag">minimalism</span>
+      </div>
+    </div>
+
+    <div class="chip-row">
+      <button class="chip active">All · 24</button>
+      <button class="chip">Blest</button>
+      <button class="chip">Poltrona</button>
+      <button class="chip">Tanguay · 5</button>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:14px 22px;padding:4px 2px">
+      <label style="display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--text-2)"><span class="switch on" role="switch"></span>All categories</label>
+      <label style="display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--text-2)"><span class="switch on" role="switch"></span>Pro mode</label>
+    </div>
+
+    <div class="group">
+      <div class="group-head">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 18v-5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v5"/><path d="M2 18h20v2a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1h-12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M7 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/></svg></div>
+        <div class="title"><b>Sofa</b><span><span class="selcount">1</span> selected</span></div>
+        <div class="badge selcount">1</div>
+        <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div class="group-body">
+        <div class="studio-product selected"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-blisscape/200/200"></div><div class="info"><b>Blisscape Sofa</b><span class="sku">PF-SF-21</span><div class="match-bar"><div class="track"><span style="width:49%"></span></div><span class="pct">49%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-cometogether/200/200"></div><div class="info"><b>Come Together</b><span class="sku">PF-SF-07</span><div class="match-bar"><div class="track"><span style="width:49%"></span></div><span class="pct">49%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-aura/200/200"></div><div class="info"><b>Aura</b><span class="sku">BX-SF-02</span><div class="match-bar"><div class="track"><span style="width:45%"></span></div><span class="pct">45%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 10h18"/><path d="M5 10v8"/><path d="M19 10v8"/><path d="M3 7l3-3h12l3 3"/></svg></div>
+        <div class="title"><b>Coffee Table</b><span><span class="selcount">1</span> selected</span></div>
+        <div class="badge selcount">1</div>
+        <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div class="group-body">
+        <div class="studio-product selected"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-mirage/200/200"></div><div class="info"><b>Mirage</b><span class="sku">GI-CT-08</span><div class="match-bar"><div class="track"><span style="width:42%"></span></div><span class="pct">42%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-baba/200/200"></div><div class="info"><b>Baba</b><span class="sku">PLF-CT-01</span><div class="match-bar"><div class="track"><span style="width:39%"></span></div><span class="pct">39%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-nara/200/200"></div><div class="info"><b>Nara</b><span class="sku">PLF-CT-11</span><div class="match-bar"><div class="track"><span style="width:38%"></span></div><span class="pct">38%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+      </div>
+    </div>
+
+    <div class="group collapsed">
+      <div class="group-head">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 20v-6"/><path d="M18 20v-6"/><path d="M5 14h14"/><path d="M7 14V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v9"/></svg></div>
+        <div class="title"><b>Chair</b><span><span class="selcount">1</span> selected</span></div>
+        <div class="badge selcount">1</div>
+        <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div class="group-body">
+        <div class="studio-product selected"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-dining-chair/200/200"></div><div class="info"><b>Dining Chair</b><span class="sku">BX-CH-12</span><div class="match-bar"><div class="track"><span style="width:37%"></span></div><span class="pct">37%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+      </div>
+    </div>
+
+    <div class="group collapsed">
+      <div class="group-head">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 12h10M7 15h10"/></svg></div>
+        <div class="title"><b>Carpet</b><span><span class="selcount">1</span> selected</span></div>
+        <div class="badge selcount">1</div>
+        <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div class="group-body">
+        <div class="studio-product selected"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-faira/200/200"></div><div class="info"><b>Faira Area Rug</b><span class="sku">GI-CP-04</span><div class="match-bar"><div class="track"><span style="width:35%"></span></div><span class="pct">35%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+      </div>
+    </div>
+
+    <div class="sticky-cta">
+      <button class="btn btn-white" data-next="4">Continue with selections <span class="count-badge" id="totalCount">4</span></button>
+    </div>
+  </section>
+
+  <!-- Screen 4 · Selection -->
+  <section class="screen" data-step="4">
+    <div class="ornament">✦ YOUR SELECTION ✦</div>
+    <button class="btn btn-ghost" style="text-align:center;color:var(--gold);font-weight:500" data-next="3">+ Add more products</button>
+    <div class="stats-row" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat-card" style="text-align:center"><div class="val">4</div><div class="label" style="margin-top:6px;margin-bottom:0">Products</div></div>
+      <div class="stat-card" style="text-align:center"><div class="val">3</div><div class="label" style="margin-top:6px;margin-bottom:0">Categories</div></div>
+      <div class="stat-card" style="text-align:center"><div class="val" style="color:var(--gold)">42%</div><div class="label" style="margin-top:6px;margin-bottom:0">Avg match</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="https://picsum.photos/seed/eleganza-blisscape/80/80" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Sofa</div><b>Blisscape Sofa</b><span>Match: 49%</span></div></div>
+      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="https://picsum.photos/seed/eleganza-mirage/80/80" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Coffee Table</div><b>Mirage</b><span>Match: 42%</span></div></div>
+      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="https://picsum.photos/seed/eleganza-dining-chair/80/80" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Chair</div><b>Dining Chair</b><span>Match: 37%</span></div></div>
+      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="https://picsum.photos/seed/eleganza-faira/80/80" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Carpet</div><b>Faira Area Rug</b><span>Match: 35%</span></div></div>
+    </div>
+    <div class="ornament">✦ REIMAGINE YOUR SPACE ✦</div>
+    <button class="btn btn-primary btn-block" style="padding:16px" data-next="5">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>
+      Generate visualization
+    </button>
+  </section>
+
+  <!-- Screen 5 · Generate -->
+  <section class="screen" data-step="5">
+    <div class="ready-stage">
+      <div class="check-big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div style="font-weight:600;font-size:17px">Visualization ready</div>
+    </div>
+    <div class="action-grid">
+      <button class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>Full preview</button>
+      <button class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Save</button>
+      <button class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Share</button>
+      <button class="btn" data-next="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Retry</button>
+    </div>
+    <div class="ornament">✦ COMPARE ✦</div>
+    <div class="compare-grid">
+      <div class="compare"><img src="https://picsum.photos/seed/eleganza-before/400/500" alt=""><span>Before</span></div>
+      <div class="compare"><img src="https://picsum.photos/seed/eleganza-after/400/500" alt=""><span>After</span></div>
+    </div>
+    <button class="btn btn-white btn-block" style="padding:16px" data-next="1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Start a new project
+    </button>
+  </section>
+
+</div>
+
+<aside>
+  <div class="card">
+    <h3 style="margin:0 0 10px;font-size:13px;font-weight:500;color:var(--text-2);letter-spacing:.3px;text-transform:uppercase">Your project</h3>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-2)"><span>Room</span><span style="color:var(--text)">Living room</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-2)"><span>Style</span><span style="color:var(--text)">Modern · Minimal</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-2)"><span>Stores</span><span style="color:var(--text)">5 active</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-2)"><span>Selected</span><span style="color:var(--text)">4 items</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3 style="margin:0 0 12px;font-size:13px;font-weight:500;color:var(--text-2);letter-spacing:.3px;text-transform:uppercase">Tips</h3>
+    <p style="text-align:left;margin:0;color:var(--text-2);font-size:13px">Upload a well-lit, uncluttered photo of a single room. AI works best with wide-angle shots that show floor, walls and key furniture.</p>
+  </div>
+</aside>
+</div>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="logo-name">Eleganza</span></div>
+      <button class="menu-btn" id="closeDrawer">×</button>
+    </div>
+    <a class="nav-item" href="/">Home</a>
+    <a class="nav-item" href="/#solution">Solution</a>
+    <a class="nav-item" href="/#pricing">Pricing</a>
+    <a class="nav-item" href="/app/projects.html">App demo</a>
+    <a class="nav-item" href="/login.html">Sign in</a>
+  </div>
+</div>
+
+<script src="/assets/app.js"></script>
+<script>
+// Studio-specific step navigation
+(() => {
+  const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+  const $ = (s, r=document) => r.querySelector(s);
+  const STEP_TO_PILL = { 1:1, 2:2, 3:3, 4:3, 5:4 };
+  function goto(step) {
+    $$(".screen").forEach(s => s.classList.toggle("active", s.dataset.step == step));
+    const pill = STEP_TO_PILL[step];
+    $$("#stepper .step").forEach((el, i) => {
+      el.classList.remove("current","done");
+      if (i + 1 < pill) el.classList.add("done");
+      else if (i + 1 == pill) el.classList.add("current");
+    });
+    $$("#stepper .step-bar").forEach((el, i) => {
+      el.classList.toggle("done", (i + 1) < pill);
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (step == 2) startAnalyzing();
+  }
+  document.addEventListener("click", e => {
+    const next = e.target.closest("[data-next]");
+    if (next) goto(+next.dataset.next);
+    const go = e.target.closest("[data-go]");
+    if (go) goto(+go.dataset.go);
+  });
+  $("#fileInput")?.addEventListener("change", e => { if (e.target.files.length) goto(2); });
+  $("#openCamera")?.addEventListener("click", () => $("#fileInput").click());
+
+  let timer;
+  function startAnalyzing() {
+    clearInterval(timer);
+    let pct = 0;
+    const bar = $("#analyzeBar"), text = $("#analyzePct"), step = $("#analyzeStep");
+    const chips = $$(".status-row .status-chip");
+    chips.forEach(c => c.classList.remove("done","active"));
+    chips[0].classList.add("active");
+    timer = setInterval(() => {
+      pct += 6 + Math.random() * 4;
+      if (pct > 100) pct = 100;
+      bar.style.width = pct + "%";
+      text.textContent = Math.round(pct) + "%";
+      if (pct < 34) { step.textContent = "Step 1 of 3"; }
+      else if (pct < 67) {
+        step.textContent = "Step 2 of 3";
+        chips[0].classList.remove("active"); chips[0].classList.add("done");
+        chips[1].classList.add("active");
+      } else {
+        step.textContent = "Step 3 of 3";
+        chips[1].classList.remove("active"); chips[1].classList.add("done");
+        chips[2].classList.add("active");
+      }
+      if (pct >= 100) {
+        clearInterval(timer);
+        chips[2].classList.remove("active"); chips[2].classList.add("done");
+        setTimeout(() => goto(3), 600);
+      }
+    }, 220);
+  }
+})();
+</script>
+</body>
+</html>
