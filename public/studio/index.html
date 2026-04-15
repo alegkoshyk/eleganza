@@ -16,7 +16,7 @@
 <header class="topbar">
   <div class="topbar-inner">
     <button class="menu-btn" id="openDrawer" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="logo-name">Eleganza</span></a>
+    <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 54 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M54 0.09375L36.0001 0.09385V7.29379C36.0001 19.5975 36.0001 25.7493 39.8223 29.5716C42.6936 32.4428 46.8794 33.1572 54 33.335V0.09375Z" fill="white"/><path d="M33.3001 0.09385L0 0.09375V33.3939H7.20008C19.5037 33.3939 25.6555 33.3939 29.4778 29.5716C33.3001 25.7493 33.3001 19.5975 33.3001 7.29379V0.09385Z" fill="white"/><path d="M54 36.1527C46.8794 36.3305 42.6935 37.0449 39.8222 39.9161C36.951 42.7874 36.2366 46.9732 36.0589 54.0938H54V36.1527Z" fill="white"/><path d="M33.2412 54.0938C33.0634 46.9732 32.3491 42.7874 29.4778 39.9161C25.6555 36.0939 19.5037 36.0939 7.20008 36.0939H0V54.0938H33.2412Z" fill="white"/></svg></span><span class="logo-full"><img src="/assets/eleganza-logo.svg" alt="Eleganza"></span><span class="logo-name">Eleganza</span></a>
     <nav class="topnav"><a href="/">Home</a><a href="/#solution">Solution</a><a href="/#pricing">Pricing</a><a href="/studio/" class="active">Studio</a><a href="/app/projects.html">App demo</a></nav>
     <div class="spacer"></div>
     <a class="ghost" href="/login.html">Sign in</a>
@@ -27,15 +27,15 @@
 <div class="studio">
 <div class="studio-main">
 
-  <!-- Stepper -->
-  <div class="stepper" id="stepper" role="navigation" aria-label="Progress">
-    <div class="step current" data-go="1"><div class="step-dot">1</div><div class="step-label">Upload</div></div>
-    <div class="step-bar"></div>
-    <div class="step" data-go="2"><div class="step-dot">2</div><div class="step-label">Analyze</div></div>
-    <div class="step-bar"></div>
-    <div class="step" data-go="3"><div class="step-dot">3</div><div class="step-label">Select</div></div>
-    <div class="step-bar"></div>
-    <div class="step" data-go="5"><div class="step-dot">4</div><div class="step-label">Generate</div></div>
+  <!-- Progress strip (Figma 24:3075) -->
+  <div class="progress-strip" id="progressStrip">
+    <span class="label"><b id="progressLabel">Upload</b> &mdash; <span id="progressNum">1</span> of 4</span>
+    <div class="bars">
+      <div class="bar active" data-step="1"></div>
+      <div class="bar" data-step="2"></div>
+      <div class="bar" data-step="3"></div>
+      <div class="bar" data-step="5"></div>
+    </div>
   </div>
 
   <!-- Screen 1 · Upload -->
@@ -103,7 +103,7 @@
   <!-- Screen 3 · Results -->
   <section class="screen" data-step="3">
     <div class="image-stage">
-      <img src="https://picsum.photos/seed/eleganza-studio-living/1200/750" alt="">
+      <img src="/photos/eleganza-studio-living.jpg" alt="">
       <button class="iconbtn" style="position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.55);color:var(--text);display:grid;place-items:center;backdrop-filter:blur(6px);z-index:2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l4-5h10l4 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 9h18"/></svg>
       </button>
@@ -138,9 +138,9 @@
         <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></div>
       </div>
       <div class="group-body">
-        <div class="studio-product selected"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-blisscape/200/200"></div><div class="info"><b>Blisscape Sofa</b><span class="sku">PF-SF-21</span><div class="match-bar"><div class="track"><span style="width:49%"></span></div><span class="pct">49%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
-        <div class="studio-product"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-cometogether/200/200"></div><div class="info"><b>Come Together</b><span class="sku">PF-SF-07</span><div class="match-bar"><div class="track"><span style="width:49%"></span></div><span class="pct">49%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
-        <div class="studio-product"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-aura/200/200"></div><div class="info"><b>Aura</b><span class="sku">BX-SF-02</span><div class="match-bar"><div class="track"><span style="width:45%"></span></div><span class="pct">45%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product selected"><div class="thumb"><img src="/photos/eleganza-blisscape.jpg"></div><div class="info"><b>Blisscape Sofa</b><span class="sku">PF-SF-21</span><div class="match-bar"><div class="track"><span style="width:49%"></span></div><span class="pct">49%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product"><div class="thumb"><img src="/photos/eleganza-cometogether.jpg"></div><div class="info"><b>Come Together</b><span class="sku">PF-SF-07</span><div class="match-bar"><div class="track"><span style="width:49%"></span></div><span class="pct">49%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product"><div class="thumb"><img src="/photos/eleganza-aura.jpg"></div><div class="info"><b>Aura</b><span class="sku">BX-SF-02</span><div class="match-bar"><div class="track"><span style="width:45%"></span></div><span class="pct">45%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
       </div>
     </div>
 
@@ -152,9 +152,9 @@
         <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></div>
       </div>
       <div class="group-body">
-        <div class="studio-product selected"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-mirage/200/200"></div><div class="info"><b>Mirage</b><span class="sku">GI-CT-08</span><div class="match-bar"><div class="track"><span style="width:42%"></span></div><span class="pct">42%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
-        <div class="studio-product"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-baba/200/200"></div><div class="info"><b>Baba</b><span class="sku">PLF-CT-01</span><div class="match-bar"><div class="track"><span style="width:39%"></span></div><span class="pct">39%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
-        <div class="studio-product"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-nara/200/200"></div><div class="info"><b>Nara</b><span class="sku">PLF-CT-11</span><div class="match-bar"><div class="track"><span style="width:38%"></span></div><span class="pct">38%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product selected"><div class="thumb"><img src="/photos/eleganza-mirage.jpg"></div><div class="info"><b>Mirage</b><span class="sku">GI-CT-08</span><div class="match-bar"><div class="track"><span style="width:42%"></span></div><span class="pct">42%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product"><div class="thumb"><img src="/photos/eleganza-baba.jpg"></div><div class="info"><b>Baba</b><span class="sku">PLF-CT-01</span><div class="match-bar"><div class="track"><span style="width:39%"></span></div><span class="pct">39%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product"><div class="thumb"><img src="/photos/eleganza-nara.jpg"></div><div class="info"><b>Nara</b><span class="sku">PLF-CT-11</span><div class="match-bar"><div class="track"><span style="width:38%"></span></div><span class="pct">38%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
       </div>
     </div>
 
@@ -166,7 +166,7 @@
         <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></div>
       </div>
       <div class="group-body">
-        <div class="studio-product selected"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-dining-chair/200/200"></div><div class="info"><b>Dining Chair</b><span class="sku">BX-CH-12</span><div class="match-bar"><div class="track"><span style="width:37%"></span></div><span class="pct">37%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product selected"><div class="thumb"><img src="/photos/eleganza-dining-chair.jpg"></div><div class="info"><b>Dining Chair</b><span class="sku">BX-CH-12</span><div class="match-bar"><div class="track"><span style="width:37%"></span></div><span class="pct">37%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
       </div>
     </div>
 
@@ -178,7 +178,7 @@
         <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></div>
       </div>
       <div class="group-body">
-        <div class="studio-product selected"><div class="thumb"><img src="https://picsum.photos/seed/eleganza-faira/200/200"></div><div class="info"><b>Faira Area Rug</b><span class="sku">GI-CP-04</span><div class="match-bar"><div class="track"><span style="width:35%"></span></div><span class="pct">35%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
+        <div class="studio-product selected"><div class="thumb"><img src="/photos/eleganza-faira.jpg"></div><div class="info"><b>Faira Area Rug</b><span class="sku">GI-CP-04</span><div class="match-bar"><div class="track"><span style="width:35%"></span></div><span class="pct">35%</span></div></div><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div></div>
       </div>
     </div>
 
@@ -197,10 +197,10 @@
       <div class="stat-card" style="text-align:center"><div class="val" style="color:var(--gold)">42%</div><div class="label" style="margin-top:6px;margin-bottom:0">Avg match</div></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px">
-      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="https://picsum.photos/seed/eleganza-blisscape/80/80" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Sofa</div><b>Blisscape Sofa</b><span>Match: 49%</span></div></div>
-      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="https://picsum.photos/seed/eleganza-mirage/80/80" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Coffee Table</div><b>Mirage</b><span>Match: 42%</span></div></div>
-      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="https://picsum.photos/seed/eleganza-dining-chair/80/80" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Chair</div><b>Dining Chair</b><span>Match: 37%</span></div></div>
-      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="https://picsum.photos/seed/eleganza-faira/80/80" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Carpet</div><b>Faira Area Rug</b><span>Match: 35%</span></div></div>
+      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="/photos/eleganza-blisscape.jpg" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Sofa</div><b>Blisscape Sofa</b><span>Match: 49%</span></div></div>
+      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="/photos/eleganza-mirage.jpg" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Coffee Table</div><b>Mirage</b><span>Match: 42%</span></div></div>
+      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="/photos/eleganza-dining-chair.jpg" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Chair</div><b>Dining Chair</b><span>Match: 37%</span></div></div>
+      <div class="event"><div class="ev-ico" style="overflow:hidden;padding:0"><img src="/photos/eleganza-faira.jpg" style="width:100%;height:100%;object-fit:cover"></div><div class="body"><div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase">Carpet</div><b>Faira Area Rug</b><span>Match: 35%</span></div></div>
     </div>
     <div class="ornament">✦ REIMAGINE YOUR SPACE ✦</div>
     <button class="btn btn-primary btn-block" style="padding:16px" data-next="5">
@@ -223,8 +223,8 @@
     </div>
     <div class="ornament">✦ COMPARE ✦</div>
     <div class="compare-grid">
-      <div class="compare"><img src="https://picsum.photos/seed/eleganza-before/400/500" alt=""><span>Before</span></div>
-      <div class="compare"><img src="https://picsum.photos/seed/eleganza-after/400/500" alt=""><span>After</span></div>
+      <div class="compare"><img src="/photos/eleganza-before.jpg" alt=""><span>Before</span></div>
+      <div class="compare"><img src="/photos/eleganza-after.jpg" alt=""><span>After</span></div>
     </div>
     <button class="btn btn-white btn-block" style="padding:16px" data-next="1">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -254,7 +254,7 @@
 <div class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer-panel">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="logo-name">Eleganza</span></div>
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 54 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M54 0.09375L36.0001 0.09385V7.29379C36.0001 19.5975 36.0001 25.7493 39.8223 29.5716C42.6936 32.4428 46.8794 33.1572 54 33.335V0.09375Z" fill="white"/><path d="M33.3001 0.09385L0 0.09375V33.3939H7.20008C19.5037 33.3939 25.6555 33.3939 29.4778 29.5716C33.3001 25.7493 33.3001 19.5975 33.3001 7.29379V0.09385Z" fill="white"/><path d="M54 36.1527C46.8794 36.3305 42.6935 37.0449 39.8222 39.9161C36.951 42.7874 36.2366 46.9732 36.0589 54.0938H54V36.1527Z" fill="white"/><path d="M33.2412 54.0938C33.0634 46.9732 32.3491 42.7874 29.4778 39.9161C25.6555 36.0939 19.5037 36.0939 7.20008 36.0939H0V54.0938H33.2412Z" fill="white"/></svg></span><span class="logo-full"><img src="/assets/eleganza-logo.svg" alt="Eleganza"></span><span class="logo-name">Eleganza</span></div>
       <button class="menu-btn" id="closeDrawer">×</button>
     </div>
     <a class="nav-item" href="/">Home</a>
@@ -272,7 +272,24 @@
   const $$ = (s, r=document) => [...r.querySelectorAll(s)];
   const $ = (s, r=document) => r.querySelector(s);
   const STEP_TO_PILL = { 1:1, 2:2, 3:3, 4:3, 5:4 };
+    // Studio progress strip sync
+  const STEP_MAP = { 1: ["Upload", 1], 2: ["Analyze", 2], 3: ["Select", 3], 4: ["Select", 3], 5: ["Generate", 4] };
+  const origGoto = window.studioGoto;
+  function syncProgress(step) {
+    const [label, num] = STEP_MAP[step] || ["Upload", 1];
+    const lbl = document.getElementById("progressLabel");
+    const n = document.getElementById("progressNum");
+    if (lbl) lbl.textContent = label;
+    if (n) n.textContent = num;
+    document.querySelectorAll("#progressStrip .bar").forEach((b, i) => {
+      b.classList.remove("active", "done");
+      if (i + 1 < num) b.classList.add("done");
+      else if (i + 1 === num) b.classList.add("active");
+    });
+  }
+
   function goto(step) {
+    syncProgress(step);
     $$(".screen").forEach(s => s.classList.toggle("active", s.dataset.step == step));
     const pill = STEP_TO_PILL[step];
     $$("#stepper .step").forEach((el, i) => {
