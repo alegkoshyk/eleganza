@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "eleganza",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "5173", "--directory", "public"],
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "serve", "-l", "5173", "public"],
       "port": 5173
     }
   ]

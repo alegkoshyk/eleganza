@@ -59,14 +59,15 @@
     </div>
 
     <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin:0 0 10px"><h3 style="margin:0;font-size:14px;font-weight:500;color:var(--text-2)">Search in stores</h3><button type="button" style="color:var(--gold);font-size:13px;font-weight:500">Select all</button></div>
-      <div class="chip-row">
-        <button class="chip active">Blest</button>
-        <button class="chip">Agromat</button>
-        <button class="chip">Poltrona</button>
-        <button class="chip">Kis</button>
-        <button class="chip">Tanguay</button>
-      </div>
+      <button class="stores-selector" type="button" data-modal="stores-modal">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-6h15L21 9"/><path d="M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9"/><path d="M3 9h18"/><path d="M9 21v-6h6v6"/></svg></div>
+        <div class="summary">
+          <b>Search in stores</b>
+          <span id="storesSummary">5 of 30 selected · Cassina, Flexform, Minotti +2</span>
+        </div>
+        <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+      </button>
+      <div class="selected-stores" id="selectedStores"></div>
       <h3 style="margin:20px 2px 10px;font-size:14px;font-weight:500;color:var(--text-2)">How it works</h3>
       <ol style="list-style:none;padding:0;margin:0;display:grid;gap:14px">
         <li style="display:grid;grid-template-columns:28px 1fr;align-items:center;gap:12px;font-size:14px;color:var(--text-2)"><span style="width:28px;height:28px;border-radius:50%;background:var(--gold-soft);color:var(--gold);display:grid;place-items:center;font-size:13px;font-weight:600">1</span>Upload room photo</li>
@@ -107,10 +108,18 @@
       <button class="iconbtn" style="position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.55);color:var(--text);display:grid;place-items:center;backdrop-filter:blur(6px);z-index:2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l4-5h10l4 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 9h18"/></svg>
       </button>
-      <div class="marker" style="left:28%;top:40%">+</div>
-      <div class="marker" style="left:56%;top:55%">·</div>
-      <div class="marker" style="left:72%;top:38%">·</div>
-      <div class="marker" style="left:85%;top:30%">·</div>
+      <button class="marker" data-goto="sofa" style="left:28%;top:62%" aria-label="Sofa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v5"/><path d="M2 18h20v2a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1h-12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M7 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/></svg>
+      </button>
+      <button class="marker" data-goto="coffee-table" style="left:44%;top:72%" aria-label="Coffee Table">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18"/><path d="M5 10v8"/><path d="M19 10v8"/><path d="M3 7l3-3h12l3 3"/></svg>
+      </button>
+      <button class="marker" data-goto="chair" style="left:60%;top:54%" aria-label="Chair">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20v-6"/><path d="M18 20v-6"/><path d="M5 14h14"/><path d="M7 14V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v9"/></svg>
+      </button>
+      <button class="marker" data-goto="carpet" style="left:40%;top:88%" aria-label="Carpet">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 12h10M7 15h10"/></svg>
+      </button>
       <div class="corner-tags">
         <span class="tag">living_room</span>
         <span class="tag">modern</span>
@@ -130,7 +139,7 @@
       <label style="display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--text-2)"><span class="switch on" role="switch"></span>Pro mode</label>
     </div>
 
-    <div class="group">
+    <div class="group" data-group="sofa">
       <div class="group-head">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 18v-5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v5"/><path d="M2 18h20v2a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1h-12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M7 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/></svg></div>
         <div class="title"><b>Sofa</b><span><span class="selcount">1</span> selected</span></div>
@@ -144,7 +153,7 @@
       </div>
     </div>
 
-    <div class="group">
+    <div class="group" data-group="coffee-table">
       <div class="group-head">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 10h18"/><path d="M5 10v8"/><path d="M19 10v8"/><path d="M3 7l3-3h12l3 3"/></svg></div>
         <div class="title"><b>Coffee Table</b><span><span class="selcount">1</span> selected</span></div>
@@ -158,7 +167,7 @@
       </div>
     </div>
 
-    <div class="group collapsed">
+    <div class="group collapsed" data-group="chair">
       <div class="group-head">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 20v-6"/><path d="M18 20v-6"/><path d="M5 14h14"/><path d="M7 14V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v9"/></svg></div>
         <div class="title"><b>Chair</b><span><span class="selcount">1</span> selected</span></div>
@@ -170,7 +179,7 @@
       </div>
     </div>
 
-    <div class="group collapsed">
+    <div class="group collapsed" data-group="carpet">
       <div class="group-head">
         <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 12h10M7 15h10"/></svg></div>
         <div class="title"><b>Carpet</b><span><span class="selcount">1</span> selected</span></div>
@@ -265,7 +274,131 @@
   </div>
 </div>
 
+<!-- Stores selection modal -->
+<div class="modal-backdrop" id="stores-modal" aria-hidden="true">
+  <div class="modal" style="max-width:520px">
+    <button class="close" aria-label="Close">×</button>
+    <h2>Search in stores</h2>
+    <p>Pick the brand catalogs Eleganza should match products against.</p>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="storesSearch" placeholder="Search 30 brands…" autocomplete="off">
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-3);padding:0 4px">
+      <span><span id="storesCount">5</span> of 30 selected</span>
+      <button type="button" id="storesSelectAll" style="color:var(--gold);font-size:12px;font-weight:500;padding:4px 8px">Select all</button>
+    </div>
+    <div class="stores-list" id="storesList"></div>
+    <button class="btn btn-primary btn-block" type="button" id="storesDone" style="padding:14px">Done</button>
+  </div>
+</div>
+
 <script src="/assets/app.js"></script>
+<script>
+// Stores modal: 30 brands with search + selection
+(() => {
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+
+  const BRANDS = [
+    { name: "Cassina",          tag: "Italian",    sel: true  },
+    { name: "Flexform",         tag: "Italian",    sel: true  },
+    { name: "Minotti",          tag: "Italian",    sel: true  },
+    { name: "Poliform",         tag: "Italian",    sel: true  },
+    { name: "B&B Italia",       tag: "Italian",    sel: true  },
+    { name: "Molteni&C",        tag: "Italian"                },
+    { name: "Maxalto",          tag: "Italian"                },
+    { name: "Cappellini",       tag: "Italian"                },
+    { name: "Edra",             tag: "Italian"                },
+    { name: "Living Divani",    tag: "Italian"                },
+    { name: "Baxter",           tag: "Italian"                },
+    { name: "Meridiani",        tag: "Italian"                },
+    { name: "Gervasoni",        tag: "Italian"                },
+    { name: "Arketipo",         tag: "Italian"                },
+    { name: "Porro",            tag: "Italian"                },
+    { name: "Boffi",            tag: "Kitchen"                },
+    { name: "Bulthaup",         tag: "Kitchen"                },
+    { name: "Arclinea",         tag: "Kitchen"                },
+    { name: "Vitra",            tag: "Swiss"                  },
+    { name: "Knoll",            tag: "American"               },
+    { name: "Herman Miller",    tag: "American"               },
+    { name: "Fritz Hansen",     tag: "Danish"                 },
+    { name: "Carl Hansen & Søn",tag: "Danish"                 },
+    { name: "Artemide",         tag: "Lighting"               },
+    { name: "Flos",             tag: "Lighting"               },
+    { name: "Foscarini",        tag: "Lighting"               },
+    { name: "Luceplan",         tag: "Lighting"               },
+    { name: "Kartell",          tag: "Italian"                },
+    { name: "Magis",            tag: "Italian"                },
+    { name: "Driade",           tag: "Italian"                },
+  ];
+
+  function render(filter = "") {
+    const list = $("#storesList");
+    const f = filter.trim().toLowerCase();
+    const items = BRANDS.map((b, i) => ({ ...b, i }))
+      .filter(b => !f || b.name.toLowerCase().includes(f) || b.tag.toLowerCase().includes(f));
+    if (items.length === 0) {
+      list.innerHTML = '<div class="empty">No brands match "' + filter + '"</div>';
+    } else {
+      list.innerHTML = items.map(b =>
+        `<label class="store-item" data-i="${b.i}">
+          <input type="checkbox" ${b.sel ? "checked" : ""}>
+          <span class="name">${b.name}</span>
+          <span class="badge">${b.tag}</span>
+        </label>`
+      ).join("");
+    }
+  }
+
+  function updateSummary() {
+    const sel = BRANDS.filter(b => b.sel);
+    const count = sel.length;
+    $("#storesCount").textContent = count;
+    const summary = $("#storesSummary");
+    if (count === 0) {
+      summary.textContent = "No stores selected";
+    } else {
+      summary.textContent = `${count} of ${BRANDS.length} selected`;
+    }
+    // Render full chip list below the button
+    const list = $("#selectedStores");
+    list.innerHTML = sel
+      .map((b, i) => `<span class="tag${i === 0 ? " gold" : ""}">${b.name}</span>`)
+      .join("");
+  }
+
+  // Init
+  render();
+  updateSummary();
+
+  // Checkbox toggle (delegated)
+  $("#storesList").addEventListener("change", e => {
+    const item = e.target.closest(".store-item");
+    if (!item) return;
+    const i = +item.dataset.i;
+    BRANDS[i].sel = e.target.checked;
+    updateSummary();
+  });
+
+  // Search input
+  $("#storesSearch").addEventListener("input", e => render(e.target.value));
+
+  // Select all (toggles between all and none based on current state)
+  $("#storesSelectAll").addEventListener("click", () => {
+    const allSelected = BRANDS.every(b => b.sel);
+    BRANDS.forEach(b => b.sel = !allSelected);
+    render($("#storesSearch").value);
+    updateSummary();
+  });
+
+  // Done button — close modal
+  $("#storesDone").addEventListener("click", () => {
+    document.getElementById("stores-modal").classList.remove("open");
+    document.body.style.overflow = "";
+  });
+})();
+</script>
 <script>
 // Studio-specific step navigation
 (() => {
@@ -308,6 +441,28 @@
     if (next) goto(+next.dataset.next);
     const go = e.target.closest("[data-go]");
     if (go) goto(+go.dataset.go);
+    // Marker click → scroll to group, expand if collapsed, highlight both
+    const marker = e.target.closest(".marker[data-goto]");
+    if (marker) {
+      e.preventDefault();
+      const key = marker.dataset.goto;
+      const group = document.querySelector(`.group[data-group="${key}"]`);
+      if (group) {
+        group.classList.remove("collapsed");
+        // highlight pulse on the group
+        group.scrollIntoView({ behavior: "smooth", block: "center" });
+        group.animate(
+          [
+            { boxShadow: "0 0 0 0 rgba(201,164,120,0)" },
+            { boxShadow: "0 0 0 4px rgba(201,164,120,.45)" },
+            { boxShadow: "0 0 0 0 rgba(201,164,120,0)" },
+          ],
+          { duration: 1200, easing: "ease-out" }
+        );
+      }
+      // toggle active class on all markers
+      $$(".image-stage .marker[data-goto]").forEach(m => m.classList.toggle("active", m === marker));
+    }
   });
   $("#fileInput")?.addEventListener("change", e => { if (e.target.files.length) goto(2); });
   $("#openCamera")?.addEventListener("click", () => $("#fileInput").click());
