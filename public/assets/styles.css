@@ -1,5 +1,5 @@
 /* ============ Tokens ============ */
-:root {
+:root, html[data-theme="dark"] {
   --bg: #0a0a0a;
   --bg-2: #0d0d0e;
   --bg-elev: #141416;
@@ -21,6 +21,8 @@
   --red: #ef4444;
   --red-soft: rgba(239,68,68,.12);
   --blue: #60a5fa;
+  --shadow-soft: 0 4px 16px rgba(0,0,0,.25);
+  --img-filter: brightness(.88) saturate(.95);
   --radius-xs: 8px;
   --radius-sm: 12px;
   --radius-md: 18px;
@@ -33,6 +35,87 @@
   --header-h: 64px;
   --sidebar-w: 240px;
 }
+
+/* Light theme — editorial warm cream with deeper gold */
+html[data-theme="light"] {
+  --bg:              #f6f3ec;
+  --bg-2:            #ede9df;
+  --bg-elev:         #ffffff;
+  --bg-elev-2:       #faf7f0;
+  --surface:         rgba(14,14,16,.035);
+  --surface-2:       rgba(14,14,16,.06);
+  --surface-3:       rgba(14,14,16,.09);
+  --border:          rgba(14,14,16,.10);
+  --border-strong:   rgba(14,14,16,.18);
+  --text:            #0e0e10;
+  --text-2:          rgba(14,14,16,.64);
+  --text-3:          rgba(14,14,16,.42);
+  --gold:            #a8805a;
+  --gold-2:          #8e6d47;
+  --gold-soft:       rgba(168,128,90,.12);
+  --gold-ring:       rgba(168,128,90,.35);
+  --green:           #16a34a;
+  --green-soft:      rgba(22,163,74,.12);
+  --red:             #dc2626;
+  --red-soft:        rgba(220,38,38,.10);
+  --blue:            #2563eb;
+  --shadow-soft:     0 8px 24px rgba(14,14,16,.08);
+  --img-filter:      none;
+}
+html[data-theme="light"] body::before {
+  background:
+    radial-gradient(1100px 600px at 8% -10%, rgba(168,128,90,.08), transparent 60%),
+    radial-gradient(900px 500px at 110% 110%, rgba(168,128,90,.06), transparent 60%);
+}
+html[data-theme="light"] .topbar {
+  background: rgba(246,243,236,.82);
+  border-bottom-color: var(--border);
+}
+html[data-theme="light"] .btn-primary { color: #ffffff; }
+html[data-theme="light"] .btn-primary:hover { background: var(--gold-2); color: #ffffff; }
+html[data-theme="light"] .btn-white {
+  background: #0e0e10;
+  color: #ffffff;
+  border-color: #0e0e10;
+}
+html[data-theme="light"] .btn-white:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #ffffff;
+}
+html[data-theme="light"] .btn-white .count-badge {
+  background: rgba(255,255,255,.15);
+  color: #ffffff;
+}
+html[data-theme="light"] .logo-full img {
+  filter: invert(1);
+}
+html[data-theme="light"] .logo-mark svg path { fill: #0e0e10 !important; }
+html[data-theme="light"] .hero-art img,
+html[data-theme="light"] .project-cover img,
+html[data-theme="light"] .image-stage img,
+html[data-theme="light"] .studio-product .thumb img,
+html[data-theme="light"] .product .thumb img,
+html[data-theme="light"] .variant .vthumbs img,
+html[data-theme="light"] .cta-strip { filter: none; }
+html[data-theme="light"] .cta-strip {
+  background:
+    linear-gradient(180deg, rgba(246,243,236,.85) 0%, rgba(246,243,236,.55) 35%, rgba(246,243,236,.55) 65%, rgba(246,243,236,.92) 100%),
+    radial-gradient(700px 300px at 50% 50%, rgba(168,128,90,.18), transparent 60%),
+    url("/photos/eleganza-hero-living.jpg") center/cover no-repeat,
+    var(--bg-elev);
+}
+html[data-theme="light"] .hero-art .marker {
+  color: #ffffff;
+}
+html[data-theme="light"] .project-cover::after {
+  background: linear-gradient(180deg, transparent 50%, rgba(255,255,255,.3));
+}
+
+/* Color-scheme meta — lets native form controls and scrollbars follow theme */
+html[data-theme="dark"] { color-scheme: dark; }
+html[data-theme="light"] { color-scheme: light; }
+html:not([data-theme]) { color-scheme: dark; }
 
 /* ============ Base ============ */
 *, *::before, *::after { box-sizing: border-box; }
@@ -163,6 +246,29 @@ body::before {
 }
 .menu-btn svg { width: 18px; height: 18px; }
 @media (min-width: 720px) { .menu-btn { display: none; } }
+
+/* Theme toggle — sun / moon pill */
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition: background .15s, color .15s, transform .2s;
+}
+.theme-toggle:hover { background: var(--surface-3); }
+.theme-toggle svg { width: 18px; height: 18px; display: block; }
+.theme-toggle .sun { display: none; }
+.theme-toggle .moon { display: block; }
+html[data-theme="light"] .theme-toggle .sun { display: block; }
+html[data-theme="light"] .theme-toggle .moon { display: none; }
+html[data-theme="light"] .theme-toggle { color: var(--text); }
+.theme-toggle:active { transform: scale(.94); }
 
 /* ============ Progress strip (Figma 24:3075) ============ */
 /* 4-segment thin gold progress bar with label on the left.
@@ -320,16 +426,19 @@ body::before {
 }
 .hero-art .marker {
   position: absolute;
-  width: 30px; height: 30px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   background: var(--gold);
-  color: #000;
+  color: #141010;
   display: grid; place-items: center;
-  font-weight: 700;
-  font-size: 13px;
-  box-shadow: 0 0 0 8px rgba(201,164,120,.25);
+  box-shadow: 0 0 0 8px rgba(201,164,120,.25), 0 4px 12px rgba(0,0,0,.35);
   transform: translate(-50%,-50%);
   z-index: 2;
+}
+.hero-art .marker svg {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 .brands {

@@ -8,16 +8,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/styles.css?v5">
+<script>(function(){try{var t=localStorage.getItem("eleganza-theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();</script>
 </head>
 <body>
 
 <header class="topbar">
   <div class="topbar-inner">
     <button class="menu-btn" id="openDrawer" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 54 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M54 0.09375L36.0001 0.09385V7.29379C36.0001 19.5975 36.0001 25.7493 39.8223 29.5716C42.6936 32.4428 46.8794 33.1572 54 33.335V0.09375Z" fill="white"/><path d="M33.3001 0.09385L0 0.09375V33.3939H7.20008C19.5037 33.3939 25.6555 33.3939 29.4778 29.5716C33.3001 25.7493 33.3001 19.5975 33.3001 7.29379V0.09385Z" fill="white"/><path d="M54 36.1527C46.8794 36.3305 42.6935 37.0449 39.8222 39.9161C36.951 42.7874 36.2366 46.9732 36.0589 54.0938H54V36.1527Z" fill="white"/><path d="M33.2412 54.0938C33.0634 46.9732 32.3491 42.7874 29.4778 39.9161C25.6555 36.0939 19.5037 36.0939 7.20008 36.0939H0V54.0938H33.2412Z" fill="white"/></svg></span><span class="logo-full"><img src="/assets/eleganza-logo.svg" alt="Eleganza"></span><span class="logo-name">Eleganza</span></a>
+    <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 54 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M54 0.09375L36.0001 0.09385V7.29379C36.0001 19.5975 36.0001 25.7493 39.8223 29.5716C42.6936 32.4428 46.8794 33.1572 54 33.335V0.09375Z" fill="white"/><path d="M33.3001 0.09385L0 0.09375V33.3939H7.20008C19.5037 33.3939 25.6555 33.3939 29.4778 29.5716C33.3001 25.7493 33.3001 19.5975 33.3001 7.29379V0.09385Z" fill="white"/><path d="M54 36.1527C46.8794 36.3305 42.6935 37.0449 39.8222 39.9161C36.951 42.7874 36.2366 46.9732 36.0589 54.0938H54V36.1527Z" fill="white"/><path d="M33.2412 54.0938C33.0634 46.9732 32.3491 42.7874 29.4778 39.9161C25.6555 36.0939 19.5037 36.0939 7.20008 36.0939H0V54.0938H33.2412Z" fill="white"/></svg></span><span class="logo-full"><img src="/assets/eleganza-logo.svg?v5" alt="Eleganza"></span><span class="logo-name">Eleganza</span></a>
     <nav class="topnav"><a href="/">Home</a><a href="/#solution">Solution</a><a href="/#pricing">Pricing</a><a href="/studio/">Studio</a><a href="/app/projects.html" class="active">App</a></nav>
     <div class="spacer"></div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
     <a class="ghost" href="/login.html">Sign out</a>
     <a class="btn btn-primary" href="/app/billing.html#buy-tokens">82 tokens</a>
   </div>
@@ -147,7 +149,7 @@
 <div class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer-panel">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 54 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M54 0.09375L36.0001 0.09385V7.29379C36.0001 19.5975 36.0001 25.7493 39.8223 29.5716C42.6936 32.4428 46.8794 33.1572 54 33.335V0.09375Z" fill="white"/><path d="M33.3001 0.09385L0 0.09375V33.3939H7.20008C19.5037 33.3939 25.6555 33.3939 29.4778 29.5716C33.3001 25.7493 33.3001 19.5975 33.3001 7.29379V0.09385Z" fill="white"/><path d="M54 36.1527C46.8794 36.3305 42.6935 37.0449 39.8222 39.9161C36.951 42.7874 36.2366 46.9732 36.0589 54.0938H54V36.1527Z" fill="white"/><path d="M33.2412 54.0938C33.0634 46.9732 32.3491 42.7874 29.4778 39.9161C25.6555 36.0939 19.5037 36.0939 7.20008 36.0939H0V54.0938H33.2412Z" fill="white"/></svg></span><span class="logo-full"><img src="/assets/eleganza-logo.svg" alt="Eleganza"></span><span class="logo-name">Eleganza</span></div>
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 54 55" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M54 0.09375L36.0001 0.09385V7.29379C36.0001 19.5975 36.0001 25.7493 39.8223 29.5716C42.6936 32.4428 46.8794 33.1572 54 33.335V0.09375Z" fill="white"/><path d="M33.3001 0.09385L0 0.09375V33.3939H7.20008C19.5037 33.3939 25.6555 33.3939 29.4778 29.5716C33.3001 25.7493 33.3001 19.5975 33.3001 7.29379V0.09385Z" fill="white"/><path d="M54 36.1527C46.8794 36.3305 42.6935 37.0449 39.8222 39.9161C36.951 42.7874 36.2366 46.9732 36.0589 54.0938H54V36.1527Z" fill="white"/><path d="M33.2412 54.0938C33.0634 46.9732 32.3491 42.7874 29.4778 39.9161C25.6555 36.0939 19.5037 36.0939 7.20008 36.0939H0V54.0938H33.2412Z" fill="white"/></svg></span><span class="logo-full"><img src="/assets/eleganza-logo.svg?v5" alt="Eleganza"></span><span class="logo-name">Eleganza</span></div>
       <button class="menu-btn" id="closeDrawer">×</button>
     </div>
     <a class="nav-item" href="/app/projects.html">Projects</a>
@@ -162,6 +164,6 @@
   </div>
 </div>
 
-<script src="/assets/app.js"></script>
+<script src="/assets/app.js?v5"></script>
 </body>
 </html>

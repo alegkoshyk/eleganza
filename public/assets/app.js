@@ -3,6 +3,18 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
+  // ===== Theme toggle =====
+  // Early theme application happens via inline script in <head> to prevent flash.
+  // Here we just wire the button clicks.
+  $$(".theme-toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "dark";
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try { localStorage.setItem("eleganza-theme", next); } catch (e) {}
+    });
+  });
+
   // ===== Drawer (mobile menu) =====
   const drawer = $("#drawer");
   if (drawer) {
