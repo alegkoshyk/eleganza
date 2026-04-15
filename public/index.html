@@ -3,17 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Eleganza — AI Room Designer</title>
+<title>Eleganza — AI for furniture showrooms</title>
 <meta name="color-scheme" content="dark">
-<meta name="description" content="Upload a room photo, let AI detect furniture and suggest matching products from partner stores.">
+<meta name="description" content="Upload an interior render. Eleganza recognizes every object and matches it to your brand catalogs. Send protected specifications to clients and track every interaction.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* ---------- Tokens ---------- */
+  /* ============ Tokens ============ */
   :root {
     --bg: #0a0a0a;
+    --bg-2: #0d0d0e;
     --bg-elev: #141416;
+    --bg-elev-2: #18181b;
     --surface: rgba(255,255,255,.045);
     --surface-2: rgba(255,255,255,.07);
     --surface-3: rgba(255,255,255,.11);
@@ -27,26 +29,31 @@
     --gold-soft: rgba(201,164,120,.14);
     --gold-ring: rgba(201,164,120,.35);
     --green: #22c55e;
+    --green-soft: rgba(34,197,94,.12);
     --red: #ef4444;
+    --red-soft: rgba(239,68,68,.12);
+    --blue: #60a5fa;
     --radius-xs: 8px;
     --radius-sm: 12px;
     --radius-md: 18px;
     --radius-lg: 24px;
     --radius-pill: 999px;
     --font: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --shell-max: 1200px;
+    --font-display: "Cormorant Garamond", "Roboto", serif;
+    --shell-max: 1280px;
     --gutter: 20px;
     --header-h: 64px;
+    --sidebar-w: 240px;
   }
 
-  /* ---------- Base ---------- */
+  /* ============ Base ============ */
   *, *::before, *::after { box-sizing: border-box; }
   html, body { height: 100%; }
   body {
     margin: 0;
     font-family: var(--font);
     font-size: 15px;
-    line-height: 1.4;
+    line-height: 1.45;
     color: var(--text);
     background: var(--bg);
     -webkit-font-smoothing: antialiased;
@@ -57,194 +64,112 @@
   button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
   img, svg { display: block; max-width: 100%; }
   [hidden] { display: none !important; }
+  ::selection { background: var(--gold-soft); color: var(--text); }
 
-  /* subtle radial warmth top-left to match dark DS */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(1100px 600px at 10% -10%, rgba(201,164,120,.05), transparent 60%),
+      radial-gradient(1100px 600px at 8% -10%, rgba(201,164,120,.06), transparent 60%),
       radial-gradient(900px 500px at 110% 110%, rgba(201,164,120,.04), transparent 60%);
     z-index: 0;
   }
 
-  /* ---------- Shell ---------- */
-  .app {
-    position: relative;
-    z-index: 1;
+  /* ============ Top header (global) ============ */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10,10,10,.78);
+    backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
     max-width: var(--shell-max);
     margin: 0 auto;
-    padding: 16px var(--gutter) calc(env(safe-area-inset-bottom) + 24px);
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  /* ---------- Header ---------- */
-  .header {
+    height: var(--header-h);
+    padding: 0 var(--gutter);
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-pill);
-    backdrop-filter: blur(12px);
+    gap: 16px;
   }
-  .brand {
-    width: 36px; height: 36px;
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    letter-spacing: .2px;
+    flex: 0 0 auto;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
     display: grid; place-items: center;
     background: var(--text);
     color: var(--bg);
-    border-radius: 10px;
-    flex: 0 0 auto;
+    border-radius: 9px;
   }
-  .brand svg { width: 18px; height: 18px; }
-  .header nav {
-    display: flex;
+  .logo-mark svg { width: 17px; height: 17px; }
+  .logo-name { font-family: var(--font-display); font-size: 21px; }
+
+  .topnav {
+    display: none;
     align-items: center;
-    gap: 8px;
-    margin-inline-start: 6px;
+    gap: 4px;
+    margin-left: 12px;
   }
-  .header nav button {
-    padding: 8px 12px;
+  .topnav button {
+    padding: 8px 14px;
     border-radius: var(--radius-pill);
-    font-size: 15px;
-    font-weight: 500;
     color: var(--text-2);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color .15s, background .15s;
   }
-  .header nav button.active { color: var(--text); }
-  .header .spacer { flex: 1; }
-  .icon-btn {
-    width: 38px; height: 38px;
+  .topnav button:hover { color: var(--text); background: var(--surface-2); }
+  .topnav button.active { color: var(--text); }
+  @media (min-width: 720px) { .topnav { display: flex; } }
+
+  .topbar .spacer { flex: 1; }
+  .topbar .ghost {
+    color: var(--text-2);
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    display: none;
+  }
+  @media (min-width: 600px) { .topbar .ghost { display: inline-flex; } }
+  .topbar .ghost:hover { color: var(--text); }
+  .menu-btn {
     display: grid; place-items: center;
+    width: 38px; height: 38px;
     border-radius: 50%;
     background: var(--surface-2);
     border: 1px solid var(--border);
-    color: var(--text);
-    transition: background .15s;
   }
-  .icon-btn:hover { background: var(--surface-3); }
-  .icon-btn svg { width: 18px; height: 18px; }
+  .menu-btn svg { width: 18px; height: 18px; }
+  @media (min-width: 720px) { .menu-btn { display: none; } }
 
-  /* ---------- Stepper ---------- */
-  .stepper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 4px 2px;
-  }
-  .step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    flex: 0 0 auto;
-  }
-  .step-dot {
-    width: 28px; height: 28px;
-    display: grid; place-items: center;
-    border-radius: 50%;
-    background: transparent;
-    border: 1.5px solid var(--border-strong);
-    color: var(--text-2);
-    font-size: 13px;
-    font-weight: 600;
-    transition: all .2s;
-  }
-  .step.done .step-dot {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: #000;
-  }
-  .step.current .step-dot {
-    background: var(--text);
-    border-color: var(--text);
-    color: #000;
-  }
-  .step-label {
-    font-size: 11px;
-    color: var(--text-3);
-    font-weight: 500;
-  }
-  .step.done .step-label,
-  .step.current .step-label { color: var(--text); }
-  .step-bar {
-    flex: 1;
-    height: 1.5px;
-    background: var(--border-strong);
-    border-radius: 2px;
-    margin-top: -18px;
-  }
-  .step-bar.done { background: var(--gold); }
-
-  /* ---------- Screens ---------- */
-  .screen {
-    display: none;
-    flex-direction: column;
-    gap: 18px;
-  }
-  .screen.active { display: flex; }
-
-  /* ---------- Cards ---------- */
-  .card {
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-  }
-  .card h2 {
-    margin: 0 0 14px;
-    font-size: 17px;
-    font-weight: 600;
-    text-align: center;
-    letter-spacing: .1px;
-  }
-  .card .sub {
-    margin: 0;
-    text-align: center;
-    color: var(--text-2);
-    font-size: 13px;
-  }
-
-  /* ---------- Screen 1: Upload ---------- */
-  .dropzone {
-    margin: 6px auto 14px;
-    width: 120px; height: 92px;
-    border-radius: var(--radius-md);
-    background: var(--surface);
-    border: 1px dashed var(--border-strong);
-    display: grid; place-items: center;
-    color: var(--text-3);
-  }
-  .dropzone svg { width: 40px; height: 40px; }
-  .upload-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 18px;
-  }
+  /* ============ Buttons ============ */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px 16px;
+    padding: 10px 16px;
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: var(--radius-pill);
     color: var(--text);
     font-weight: 500;
     font-size: 14px;
-    transition: background .15s, transform .05s;
+    transition: background .15s, transform .05s, border-color .15s;
+    white-space: nowrap;
   }
   .btn:hover { background: var(--surface-3); }
   .btn:active { transform: translateY(1px); }
-  .btn svg { width: 17px; height: 17px; }
+  .btn svg { width: 16px; height: 16px; }
   .btn-primary {
     background: var(--gold);
     border-color: var(--gold);
@@ -259,371 +184,842 @@
     font-weight: 600;
   }
   .btn-ghost { background: transparent; }
-  .meta {
-    margin-top: 12px;
+  .btn-lg { padding: 14px 22px; font-size: 15px; }
+
+  /* ============ Marketing landing ============ */
+  .marketing { position: relative; z-index: 1; }
+  .section {
+    max-width: var(--shell-max);
+    margin: 0 auto;
+    padding: 64px var(--gutter);
+  }
+  @media (min-width: 720px) { .section { padding: 96px var(--gutter); } }
+  .hero {
     text-align: center;
-    font-size: 11px;
-    color: var(--text-3);
-    letter-spacing: .3px;
+    padding-top: 56px;
   }
-  .toggle-row {
-    margin-top: 14px;
-    display: flex;
+  .hero .eyebrow {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: var(--text-2);
-    font-size: 13px;
-  }
-  .switch {
-    position: relative;
-    width: 34px; height: 20px;
-    background: var(--surface-3);
+    gap: 8px;
+    padding: 6px 14px;
     border-radius: var(--radius-pill);
-    cursor: pointer;
-    transition: background .2s;
+    background: var(--gold-soft);
+    border: 1px solid var(--gold-ring);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .8px;
+    text-transform: uppercase;
   }
-  .switch::after {
+  .hero h1 {
+    margin: 22px auto 18px;
+    max-width: 18ch;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(38px, 7vw, 76px);
+    line-height: 1.05;
+    letter-spacing: -.5px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero p {
+    max-width: 56ch;
+    margin: 0 auto 32px;
+    color: var(--text-2);
+    font-size: clamp(15px, 1.5vw, 18px);
+  }
+  .hero-cta {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .hero-art {
+    margin: 56px auto 0;
+    max-width: 980px;
+    aspect-ratio: 16/9;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(900px 400px at 30% 30%, rgba(201,164,120,.18), transparent 60%),
+      radial-gradient(700px 300px at 80% 70%, rgba(96,165,250,.10), transparent 60%),
+      var(--bg-elev);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-art::before {
     content: "";
     position: absolute;
-    top: 2px; left: 2px;
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    background: var(--text);
-    transition: transform .2s;
+    inset: 22px;
+    border-radius: var(--radius-md);
+    background:
+      linear-gradient(180deg, rgba(50,35,20,.5), rgba(20,15,10,.7)),
+      radial-gradient(400px 200px at 50% 60%, rgba(201,164,120,.18), transparent 70%);
+    border: 1px solid var(--border);
   }
-  .switch.on { background: var(--gold); }
-  .switch.on::after { transform: translateX(14px); }
-  .info-dot {
-    width: 18px; height: 18px;
+  .hero-art .marker {
+    position: absolute;
+    width: 30px; height: 30px;
     border-radius: 50%;
-    background: var(--gold-soft);
-    color: var(--gold);
+    background: var(--gold);
+    color: #000;
     display: grid; place-items: center;
+    font-weight: 700;
+    font-size: 13px;
+    box-shadow: 0 0 0 8px rgba(201,164,120,.18);
+    transform: translate(-50%,-50%);
+    z-index: 1;
+  }
+  .hero-art .marker:nth-child(1) { left: 28%; top: 52%; }
+  .hero-art .marker:nth-child(2) { left: 50%; top: 60%; }
+  .hero-art .marker:nth-child(3) { left: 70%; top: 50%; }
+  .hero-art .marker:nth-child(4) { left: 40%; top: 78%; }
+
+  /* Brands */
+  .brands {
+    padding: 24px var(--gutter);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .brands-inner {
+    max-width: var(--shell-max);
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px 40px;
+    color: var(--text-3);
+  }
+  .brands span {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: color .15s;
+  }
+  .brands span:hover { color: var(--text-2); }
+
+  /* Section heads */
+  .section-eyebrow {
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    margin: 0 0 18px;
+    max-width: 22ch;
+    letter-spacing: -.3px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-lead {
+    color: var(--text-2);
+    max-width: 60ch;
+    font-size: 16px;
+    margin: 0 0 40px;
+  }
+
+  /* Pain points */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 720px) { .pain-grid { grid-template-columns: repeat(3, 1fr); } }
+  .pain {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pain::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 140px; height: 140px;
+    background: radial-gradient(closest-side, var(--red-soft), transparent 70%);
+    pointer-events: none;
+  }
+  .pain .pain-ico {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--red-soft);
+    color: var(--red);
+    display: grid; place-items: center;
+    margin-bottom: 16px;
+  }
+  .pain .pain-ico svg { width: 22px; height: 22px; }
+  .pain h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .pain p {
+    margin: 0;
+    color: var(--text-2);
+    font-size: 14px;
+  }
+  .pain .stat {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  .pain .stat b { color: var(--red); font-size: 22px; font-weight: 600; display: block; font-family: var(--font-display); }
+
+  /* Workflow */
+  .workflow-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 720px) { .workflow-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .workflow-grid { grid-template-columns: repeat(5, 1fr); } }
+  .step-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 22px;
+  }
+  .step-card .num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #000;
+    display: grid; place-items: center;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .step-card h3 { margin: 0 0 6px; font-size: 15px; font-weight: 600; }
+  .step-card p { margin: 0; color: var(--text-3); font-size: 13px; }
+
+  /* Pricing */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 720px) { .pricing-grid { grid-template-columns: repeat(3, 1fr); } }
+  .plan {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+  }
+  .plan.featured {
+    background: linear-gradient(180deg, rgba(201,164,120,.10), var(--bg-elev) 55%);
+    border-color: var(--gold-ring);
+  }
+  .plan .badge {
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 12px;
+    background: var(--gold);
+    color: #141010;
+    border-radius: var(--radius-pill);
     font-size: 11px;
     font-weight: 700;
-    font-style: italic;
+    letter-spacing: .8px;
+    text-transform: uppercase;
   }
-
-  /* Stores row */
-  .section-head {
-    display: flex; align-items: center; justify-content: space-between;
-    margin: 4px 2px 10px;
-  }
-  .section-head h3 {
-    margin: 0;
-    font-size: 14px;
+  .plan h3 { margin: 0; font-size: 18px; font-weight: 600; }
+  .plan .price {
+    font-family: var(--font-display);
+    font-size: 52px;
     font-weight: 500;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .plan .price small { font-family: var(--font); font-size: 14px; color: var(--text-3); font-weight: 400; margin-left: 4px; }
+  .plan .desc { color: var(--text-2); font-size: 14px; margin: -8px 0 0; }
+  .plan ul {
+    list-style: none;
+    padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .plan li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
     color: var(--text-2);
   }
-  .section-head button { color: var(--gold); font-size: 13px; font-weight: 500; }
-  .chip-row {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    scrollbar-width: none;
-  }
-  .chip-row::-webkit-scrollbar { display: none; }
-  .chip {
+  .plan li svg {
+    width: 16px; height: 16px;
+    color: var(--gold);
     flex: 0 0 auto;
-    padding: 8px 16px;
-    border-radius: var(--radius-pill);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-size: 13px;
+    margin-top: 2px;
+  }
+  .plan .btn { width: 100%; padding: 14px; }
+
+  /* CTA strip */
+  .cta-strip {
+    text-align: center;
+    background: linear-gradient(180deg, rgba(201,164,120,.10), transparent 60%), var(--bg-elev);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .cta-strip h2 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
     font-weight: 500;
-    transition: background .15s;
+    margin: 0 auto 14px;
+    max-width: 22ch;
+    letter-spacing: -.3px;
   }
-  .chip:hover { background: var(--surface-3); }
-  .chip.active {
-    background: var(--text);
-    color: #141010;
-    border-color: var(--text);
-  }
-  .chip.gold.active {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: #141010;
+  .cta-strip h2 em { font-style: italic; color: var(--gold); }
+  .cta-strip p {
+    color: var(--text-2);
+    margin: 0 auto 28px;
+    max-width: 50ch;
   }
 
-  /* How-it-works */
-  .howlist { display: grid; gap: 14px; }
-  .howitem {
+  /* Footer */
+  .foot {
+    border-top: 1px solid var(--border);
+    padding: 36px var(--gutter);
+    text-align: center;
+    color: var(--text-3);
+    font-size: 13px;
+  }
+  .foot a { color: var(--text-2); }
+  .foot a:hover { color: var(--text); }
+
+  /* ============ App shell ============ */
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: var(--shell-max);
+    margin: 0 auto;
+    padding: 16px var(--gutter) 84px;
+    min-height: calc(100dvh - var(--header-h));
+  }
+  @media (min-width: 1080px) { .app { padding-bottom: calc(env(safe-area-inset-bottom) + 24px); } }
+  .app-layout {
     display: grid;
-    grid-template-columns: 28px 1fr;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 1080px) {
+    .app-layout {
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      gap: 28px;
+    }
+  }
+  .sidebar {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    position: sticky;
+    top: calc(var(--header-h) + 16px);
+    align-self: start;
+  }
+  @media (min-width: 1080px) { .sidebar { display: flex; } }
+  .sidebar h4 {
+    margin: 14px 12px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .sidebar h4:first-child { margin-top: 0; }
+  .nav-item {
+    display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
     color: var(--text-2);
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+    text-align: left;
+    transition: background .15s, color .15s;
   }
-  .howitem .num {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: var(--gold-soft);
-    color: var(--gold);
-    display: grid; place-items: center;
-    font-size: 13px;
+  .nav-item:hover { background: var(--surface-2); color: var(--text); }
+  .nav-item.active {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .nav-item.active::before {
+    content: "";
+    width: 3px;
+    height: 16px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin-right: -3px;
+  }
+  .nav-item svg { width: 18px; height: 18px; flex: 0 0 auto; }
+  .nav-item .num {
+    margin-left: auto;
+    background: var(--surface-3);
+    color: var(--text);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
     font-weight: 600;
   }
 
-  /* Generate room plan card */
-  .plan-art {
-    margin: 4px auto 16px;
-    width: 200px; aspect-ratio: 1/.75;
-    border: 1px solid var(--border-strong);
+  /* mobile drawer */
+  .drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+  }
+  .drawer.open { opacity: 1; pointer-events: auto; }
+  .drawer-panel {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: min(86vw, 320px);
+    background: var(--bg-2);
+    border-right: 1px solid var(--border);
+    padding: 20px;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .drawer.open .drawer-panel { transform: translateX(0); }
+
+  /* ============ App content ============ */
+  .screen {
+    display: none;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .screen.active { display: flex; }
+  .screen-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .screen-head h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(26px, 4vw, 36px);
+    letter-spacing: -.3px;
+  }
+  .screen-head .actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+  }
+
+  /* ----- Projects dashboard ----- */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (min-width: 600px) { .stats-row { grid-template-columns: repeat(4, 1fr); } }
+  .stat-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
     border-radius: var(--radius-md);
+    padding: 18px;
+  }
+  .stat-card .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    letter-spacing: .8px;
+    margin-bottom: 6px;
+  }
+  .stat-card .val {
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .stat-card .delta { font-size: 12px; color: var(--green); margin-top: 6px; }
+  .stat-card .delta.neutral { color: var(--text-3); }
+
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+  }
+  .search svg { width: 16px; height: 16px; color: var(--text-3); }
+  .search input {
+    flex: 1;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: var(--text);
+    font-size: 14px;
+  }
+  .search input::placeholder { color: var(--text-3); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 600px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .projects-grid { grid-template-columns: repeat(3, 1fr); } }
+  .project {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform .15s, border-color .15s;
+  }
+  .project:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+  .project-cover {
+    aspect-ratio: 16/10;
     background:
-      radial-gradient(120px 60px at 50% 50%, rgba(201,164,120,.08), transparent 70%),
-      var(--surface);
+      radial-gradient(400px 200px at 60% 60%, rgba(201,164,120,.18), transparent 70%),
+      linear-gradient(180deg, rgba(50,35,20,.4), rgba(20,15,10,.7)),
+      var(--bg-elev-2);
     position: relative;
   }
-  .plan-art::before, .plan-art::after {
+  .project-cover::after {
     content: "";
     position: absolute;
     inset: 14px;
     border: 1px solid var(--border);
-    border-radius: 6px;
-    opacity: .5;
+    border-radius: 10px;
   }
-  .plan-art::after {
-    inset: 30px 40px;
-    border-style: dashed;
+  .project-cover .marker {
+    position: absolute;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 5px rgba(201,164,120,.2);
+    transform: translate(-50%,-50%);
+    z-index: 1;
   }
+  .project-body {
+    padding: 16px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .project-body h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .project-body .meta {
+    color: var(--text-3);
+    font-size: 12px;
+  }
+  .project-body .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 6px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-2);
+  }
+  .pill.draft { color: var(--text-3); }
+  .pill.pending { background: var(--gold-soft); color: var(--gold); border-color: var(--gold-ring); }
+  .pill.approved { background: var(--green-soft); color: var(--green); border-color: rgba(34,197,94,.3); }
+  .pill.shared { background: rgba(96,165,250,.10); color: var(--blue); border-color: rgba(96,165,250,.3); }
 
-  /* ---------- Screen 2: Analyzing ---------- */
-  .analyze-stage {
-    aspect-ratio: 16/10;
-    border-radius: var(--radius-md);
-    background:
-      radial-gradient(300px 200px at 50% 45%, rgba(201,164,120,.12), transparent 70%),
-      var(--surface);
+  /* ----- Upload ----- */
+  .upload-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  @media (min-width: 1080px) { .upload-grid { grid-template-columns: 1.4fr 1fr; } }
+  .dropzone-big {
+    background: var(--bg-elev);
+    border: 1.5px dashed var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 48px 24px;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
-    color: var(--text);
-    border: 1px solid var(--border);
+    gap: 14px;
+    transition: border-color .15s, background .15s;
+    cursor: pointer;
   }
-  .sparkle { width: 54px; height: 54px; color: var(--gold); animation: pulse 2.4s ease-in-out infinite; }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: .85; }
-    50% { transform: scale(1.08); opacity: 1; }
+  .dropzone-big:hover { border-color: var(--gold-ring); background: var(--gold-soft); }
+  .dropzone-big .ico {
+    width: 64px; height: 64px;
+    border-radius: 16px;
+    background: var(--surface-2);
+    color: var(--text-2);
+    display: grid; place-items: center;
   }
-  .analyze-title { font-weight: 600; font-size: 17px; }
-  .analyze-step { color: var(--text-3); font-size: 13px; }
+  .dropzone-big .ico svg { width: 28px; height: 28px; }
+  .dropzone-big h3 { margin: 0; font-size: 18px; font-weight: 600; }
+  .dropzone-big p { margin: 0; color: var(--text-3); font-size: 13px; }
 
-  .progress {
-    margin-top: 10px;
-    display: flex; flex-direction: column; gap: 8px;
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
-  .progress-head {
-    display: flex; justify-content: space-between;
-    font-size: 13px; color: var(--text-2);
+  .field label {
+    font-size: 12px;
+    color: var(--text-3);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .6px;
   }
-  .progress-bar {
-    height: 3px;
-    background: var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .progress-bar > span {
-    display: block;
-    height: 100%;
-    background: var(--gold);
-    width: 0%;
-    transition: width .6s ease;
-  }
-
-  .status-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-  .status-chip {
-    padding: 10px 12px;
-    border-radius: var(--radius-sm);
+  .field input,
+  .field select {
+    padding: 12px 14px;
     background: var(--surface);
     border: 1px solid var(--border);
-    font-size: 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font: inherit;
+    font-size: 14px;
+    outline: 0;
   }
-  .status-chip .t { font-weight: 600; color: var(--text); }
-  .status-chip .s { color: var(--text-3); display: flex; align-items: center; gap: 4px; margin-top: 4px; }
-  .status-chip.done .s { color: var(--green); }
-  .status-chip.active { border-color: var(--gold-ring); background: var(--gold-soft); }
-  .status-chip.active .s { color: var(--gold); }
+  .field input:focus,
+  .field select:focus { border-color: var(--gold-ring); }
 
-  /* ---------- Screen 3: Results ---------- */
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 500;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .chip:hover { background: var(--surface-3); color: var(--text); }
+  .chip.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #141010;
+  }
+  .chip.brand.active {
+    background: var(--text);
+    border-color: var(--text);
+    color: #141010;
+  }
+
+  /* ----- Detection ----- */
   .image-stage {
     position: relative;
     aspect-ratio: 16/10;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     overflow: hidden;
     background:
-      radial-gradient(400px 240px at 60% 60%, rgba(201,164,120,.08), transparent 70%),
+      radial-gradient(400px 240px at 55% 55%, rgba(201,164,120,.16), transparent 70%),
       linear-gradient(180deg, rgba(50,35,20,.4), rgba(20,15,10,.7)),
       var(--bg-elev);
     border: 1px solid var(--border);
   }
   .image-stage .marker {
     position: absolute;
-    width: 28px; height: 28px;
+    width: 32px; height: 32px;
     border-radius: 50%;
     background: var(--gold);
-    display: grid; place-items: center;
     color: #000;
+    display: grid; place-items: center;
     font-weight: 700;
     font-size: 13px;
-    box-shadow: 0 0 0 6px rgba(201,164,120,.18);
+    box-shadow: 0 0 0 8px rgba(201,164,120,.18);
     transform: translate(-50%,-50%);
     cursor: pointer;
     transition: transform .15s;
   }
   .image-stage .marker:hover { transform: translate(-50%,-50%) scale(1.1); }
-  .image-stage .tags {
+  .image-stage .corner-tags {
     position: absolute;
-    left: 10px; bottom: 10px;
+    left: 12px; bottom: 12px;
     display: flex; gap: 6px; flex-wrap: wrap;
   }
-  .image-stage .tag {
-    padding: 4px 10px;
+  .corner-tags .tag {
+    padding: 5px 12px;
     border-radius: var(--radius-pill);
     background: rgba(0,0,0,.55);
+    backdrop-filter: blur(6px);
     color: var(--text-2);
     font-size: 11px;
-    backdrop-filter: blur(6px);
+    border: 1px solid var(--border);
   }
-  .toolbtn {
+  .image-stage .toolbar {
     position: absolute;
-    top: 10px; left: 10px;
+    top: 12px; right: 12px;
+    display: flex;
+    gap: 6px;
+  }
+  .toolbar .iconbtn {
     width: 32px; height: 32px;
     border-radius: 50%;
     background: rgba(0,0,0,.55);
+    backdrop-filter: blur(6px);
     color: var(--text);
     display: grid; place-items: center;
-    backdrop-filter: blur(6px);
+    border: 1px solid var(--border);
   }
-  .toolbtn svg { width: 16px; height: 16px; }
+  .toolbar .iconbtn svg { width: 14px; height: 14px; }
 
-  .toggles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px 22px;
-    padding: 4px 2px;
-  }
-  .toggle {
-    display: inline-flex;
-    align-items: center;
+  .detected-list {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 8px;
-    font-size: 13px;
-    color: var(--text-2);
+  }
+  @media (min-width: 600px) { .detected-list { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .detected-list { grid-template-columns: repeat(3, 1fr); } }
+  .detected-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+  .detected-item .num-circle {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    color: var(--gold);
+    display: grid; place-items: center;
+    font-weight: 700;
+    font-size: 12px;
+    flex: 0 0 auto;
+  }
+  .detected-item b { display: block; font-size: 14px; font-weight: 500; }
+  .detected-item span { display: block; font-size: 11px; color: var(--text-3); margin-top: 2px; }
+  .detected-item .conf {
+    margin-left: auto;
+    font-size: 16px;
+    color: var(--green);
+    font-weight: 600;
   }
 
-  .group {
+  /* ----- Matching ----- */
+  .match-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .match-tabs::-webkit-scrollbar { display: none; }
+  .match-tabs button {
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .match-tabs button.active {
+    background: var(--text);
+    color: #141010;
+  }
+
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media (min-width: 600px) { .match-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .match-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .product {
     background: var(--bg-elev);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     overflow: hidden;
-  }
-  .group-head {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
     cursor: pointer;
-    user-select: none;
+    transition: border-color .15s, transform .1s;
   }
-  .group-head .ico {
-    width: 34px; height: 34px;
-    display: grid; place-items: center;
-    border-radius: 10px;
-    background: var(--surface-2);
-    color: var(--text);
-  }
-  .group-head .ico svg { width: 18px; height: 18px; }
-  .group-head .title { flex: 1; }
-  .group-head .title b { display: block; font-weight: 600; font-size: 15px; }
-  .group-head .title span { display: block; font-size: 12px; color: var(--text-3); margin-top: 2px; }
-  .group-head .badge {
-    width: 22px; height: 22px;
-    display: grid; place-items: center;
-    border-radius: 50%;
-    background: var(--gold);
-    color: #000;
-    font-size: 12px;
-    font-weight: 700;
-  }
-  .group-head .caret {
-    color: var(--text-3);
-    transition: transform .2s;
-  }
-  .group.collapsed .caret { transform: rotate(-90deg); }
-  .group.collapsed .group-body { display: none; }
-
-  .group-body {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid var(--border);
-  }
-
-  .product {
-    display: grid;
-    grid-template-columns: 56px 1fr auto;
-    gap: 12px;
-    align-items: center;
-    padding: 12px 16px;
-    border-top: 1px solid var(--border);
-    cursor: pointer;
-    transition: background .15s;
-  }
-  .product:first-child { border-top: 0; }
-  .product:hover { background: var(--surface); }
-  .product.selected { background: var(--gold-soft); }
-  .product-thumb {
-    width: 56px; height: 56px;
-    border-radius: 10px;
-    background: linear-gradient(135deg,#2a2420 0%, #1a1512 100%);
-    border: 1px solid var(--border);
+  .product:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+  .product.selected { border-color: var(--gold-ring); }
+  .product .thumb {
+    aspect-ratio: 4/3;
+    background:
+      radial-gradient(120px 60px at 50% 50%, rgba(201,164,120,.18), transparent 70%),
+      linear-gradient(135deg, #2a2420, #18130f);
+    border-bottom: 1px solid var(--border);
     display: grid; place-items: center;
     color: var(--text-3);
+    position: relative;
   }
-  .product-info b {
-    display: block;
-    font-weight: 600;
-    font-size: 14px;
-  }
-  .product-info .sku {
-    display: block;
-    font-size: 11px;
-    color: var(--text-3);
-    margin-top: 2px;
-  }
-  .match-bar {
-    margin-top: 6px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .match-bar .track {
-    flex: 1;
-    max-width: 90px;
-    height: 3px;
-    background: var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .match-bar .track > span {
-    display: block; height: 100%;
-    background: var(--green);
-  }
-  .match-bar .pct { font-size: 11px; color: var(--green); font-weight: 600; }
-  .check {
-    width: 24px; height: 24px;
+  .product .thumb svg { width: 38px; height: 38px; }
+  .product .check {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 26px; height: 26px;
     border-radius: 50%;
     border: 1.5px solid var(--border-strong);
+    background: rgba(0,0,0,.45);
     display: grid; place-items: center;
     color: transparent;
-    transition: all .15s;
   }
   .product.selected .check {
     background: var(--gold);
@@ -631,750 +1027,839 @@
     color: #000;
   }
   .product.selected .check svg { width: 14px; height: 14px; }
-
-  /* Sticky CTA footer */
-  .sticky-cta {
-    position: sticky;
-    bottom: 12px;
-    margin-top: 4px;
-    padding: 0;
+  .product .info {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
-  .sticky-cta .btn {
-    width: 100%;
-    padding: 16px;
-    font-size: 15px;
-    border-radius: var(--radius-pill);
-  }
-  .count-badge {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: var(--surface-3);
-    color: var(--text);
-    display: grid; place-items: center;
-    font-size: 12px;
-    font-weight: 700;
-    margin-inline-start: 6px;
-  }
-
-  /* ---------- Screen 4: Selection ---------- */
-  .ornament {
-    display: flex; align-items: center; justify-content: center;
-    gap: 8px;
-    color: var(--gold);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    padding: 4px 0;
-  }
-  .ornament::before, .ornament::after {
-    content: "";
-    flex: 1;
-    max-width: 60px;
-    height: 1px;
-    background: var(--border-strong);
-  }
-  .add-more {
-    text-align: center;
-    color: var(--gold);
-    font-weight: 500;
-    padding: 6px;
-    font-size: 14px;
-  }
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-  .stat {
-    padding: 16px 12px;
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    text-align: center;
-  }
-  .stat b { display: block; font-size: 24px; font-weight: 600; }
-  .stat span { display: block; font-size: 11px; color: var(--text-3); margin-top: 2px; letter-spacing: .3px; }
-  .stat.accent b { color: var(--gold); }
-
-  .selection-card {
-    display: grid;
-    grid-template-columns: 64px 1fr auto;
-    gap: 14px;
-    align-items: center;
-    padding: 14px;
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-  }
-  .selection-card .thumb {
-    width: 64px; height: 64px;
-    border-radius: 10px;
-    background: linear-gradient(135deg,#2a2420,#1a1512);
-    border: 1px solid var(--border);
-    display: grid; place-items: center;
-    color: var(--text-3);
-  }
-  .selection-card .cat {
+  .product .info .brand-tag {
     font-size: 10px;
     font-weight: 600;
     color: var(--gold);
-    letter-spacing: 1.2px;
+    letter-spacing: 1.1px;
     text-transform: uppercase;
   }
-  .selection-card b {
-    display: block;
-    font-size: 15px;
-    font-weight: 600;
-    margin-top: 2px;
+  .product .info b { font-size: 15px; font-weight: 600; }
+  .product .info .price {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 4px;
   }
-  .selection-card .pct { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-  .remove-btn {
-    width: 30px; height: 30px;
+  .product .info .match {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .product .info .match .track {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .product .info .match .track > span {
+    display: block;
+    height: 100%;
+    background: var(--green);
+  }
+  .product .info .match .pct { font-size: 11px; color: var(--green); font-weight: 600; }
+
+  /* ----- Spec preview ----- */
+  .variants {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 720px) { .variants { grid-template-columns: repeat(3, 1fr); } }
+  .variant {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    cursor: pointer;
+    position: relative;
+  }
+  .variant.featured { border-color: var(--gold-ring); }
+  .variant h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+  }
+  .variant .price {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .variant ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-2); }
+  .variant li { display: flex; align-items: center; gap: 8px; }
+  .variant li svg { width: 14px; height: 14px; color: var(--text-3); flex: 0 0 auto; }
+
+  .protect-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    background: linear-gradient(180deg, rgba(201,164,120,.10), transparent 80%), var(--bg-elev);
+    border: 1px solid var(--gold-ring);
+    border-radius: var(--radius-md);
+  }
+  .protect-card .ico {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--gold-soft);
+    color: var(--gold);
+    display: grid; place-items: center;
+    flex: 0 0 auto;
+  }
+  .protect-card .text { flex: 1; }
+  .protect-card b { display: block; font-size: 14px; font-weight: 600; }
+  .protect-card span { display: block; font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+  /* toggle */
+  .switch {
+    position: relative;
+    width: 36px; height: 22px;
+    background: var(--surface-3);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: background .2s;
+    flex: 0 0 auto;
+  }
+  .switch::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--text);
+    transition: transform .2s;
+  }
+  .switch.on { background: var(--gold); }
+  .switch.on::after { transform: translateX(14px); }
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+  .toggle-row .label { flex: 1; font-size: 14px; }
+  .toggle-row .label small { display: block; color: var(--text-3); font-size: 12px; margin-top: 2px; }
+
+  /* ----- Activity timeline ----- */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .event {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+    padding: 16px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+  .event .ev-ico {
+    width: 40px; height: 40px;
     border-radius: 50%;
     background: var(--surface-2);
-    border: 1px solid var(--border);
     display: grid; place-items: center;
-    color: var(--text-3);
-    transition: all .15s;
+    color: var(--text-2);
   }
-  .remove-btn:hover { color: var(--red); border-color: var(--red); }
+  .event .ev-ico.gold { background: var(--gold-soft); color: var(--gold); }
+  .event .ev-ico.green { background: var(--green-soft); color: var(--green); }
+  .event .ev-ico.blue { background: rgba(96,165,250,.12); color: var(--blue); }
+  .event .ev-ico svg { width: 18px; height: 18px; }
+  .event .body b { display: block; font-size: 14px; font-weight: 600; }
+  .event .body span { display: block; font-size: 12px; color: var(--text-3); margin-top: 4px; }
+  .event .body .when { color: var(--text-3); font-size: 11px; margin-top: 6px; }
 
-  .generate-cta {
-    width: 100%;
-    padding: 16px;
-    background: var(--gold);
-    color: #141010;
-    border-radius: var(--radius-pill);
+  /* ----- Billing ----- */
+  .billing-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 1080px) { .billing-grid { grid-template-columns: 1.6fr 1fr; } }
+  .balance-card {
+    padding: 28px;
+    background: linear-gradient(180deg, rgba(201,164,120,.10), transparent 60%), var(--bg-elev);
+    border: 1px solid var(--gold-ring);
+    border-radius: var(--radius-lg);
+  }
+  .balance-card .label {
+    font-size: 11px;
+    color: var(--gold);
     font-weight: 600;
-    font-size: 15px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: background .15s, transform .05s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
-  .generate-cta:hover { background: var(--gold-2); }
-  .generate-cta svg { width: 18px; height: 18px; }
+  .balance-card .num {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 500;
+    line-height: 1;
+    margin: 8px 0;
+  }
+  .balance-card .num small { font-family: var(--font); font-size: 14px; color: var(--text-3); font-weight: 400; margin-left: 6px; }
+  .balance-card .progress {
+    margin-top: 18px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .balance-card .progress > span {
+    display: block;
+    height: 100%;
+    background: var(--gold);
+  }
+  .balance-card .progress-meta {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-3);
+  }
 
-  /* ---------- Screen 5: Generate ---------- */
-  .ready-stage {
-    aspect-ratio: 16/10;
-    border-radius: var(--radius-md);
-    background:
-      radial-gradient(400px 200px at 50% 50%, rgba(34,197,94,.06), transparent 70%),
-      var(--bg-elev);
-    border: 1px solid var(--border);
+  /* ----- Mobile bottom nav ----- */
+  .mobile-tabbar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 40;
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+    background: rgba(10,10,10,.92);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border);
+  }
+  .mobile-tabbar button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
-  }
-  .check-big {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: var(--green);
-    display: grid; place-items: center;
-    color: #001;
-    box-shadow: 0 0 0 10px rgba(34,197,94,.15);
-  }
-  .check-big svg { width: 28px; height: 28px; }
-
-  .action-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .compare-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .compare {
-    aspect-ratio: 4/5;
-    border-radius: var(--radius-md);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    display: grid; place-items: center;
+    gap: 3px;
+    padding: 6px 8px;
     color: var(--text-3);
-    font-size: 13px;
+    font-size: 10px;
     font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
   }
-  .compare::after {
-    content: "";
-    position: absolute;
-    top: 22%; bottom: 40%;
-    width: 1.5px;
-    background: var(--text-3);
-    opacity: .4;
-  }
+  .mobile-tabbar button svg { width: 20px; height: 20px; }
+  .mobile-tabbar button.active { color: var(--gold); }
+  @media (min-width: 1080px) { .mobile-tabbar { display: none; } }
 
-  /* ---------- Responsive: tablet ---------- */
-  @media (min-width: 720px) {
-    :root { --gutter: 32px; }
-    .app { padding-top: 24px; gap: 24px; }
-    .card { padding: 26px 28px; }
-    .header { padding: 10px 18px; }
-    .brand { width: 40px; height: 40px; }
-    .icon-btn { width: 42px; height: 42px; }
-    .step-dot { width: 32px; height: 32px; font-size: 14px; }
-    .step-label { font-size: 12px; }
-
-    /* Screen 1: upload and plan side-by-side */
-    .screen[data-step="1"] .twin {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    /* Stats larger numbers */
-    .stat b { font-size: 30px; }
-
-    /* Results: two-column product list layout */
-    .group-body { display: grid; grid-template-columns: 1fr 1fr; }
-    .product { border-top: 1px solid var(--border); }
-    .product:nth-child(2) { border-top: 1px solid var(--border); }
-    .product:nth-child(1), .product:nth-child(2) { border-top: 0; }
-    .product + .product { border-left: 1px solid var(--border); }
-    .product:nth-child(2n+1) { border-left: 0; }
-
-    /* Ready actions grow */
-    .action-grid { grid-template-columns: repeat(4, 1fr); }
-    .compare-grid { max-width: 520px; margin: 0 auto; }
-  }
-
-  /* ---------- Responsive: desktop ---------- */
-  @media (min-width: 1080px) {
-    :root { --gutter: 40px; }
-    body { font-size: 16px; }
-    .app { padding-top: 28px; gap: 28px; }
-
-    /* Two-column app layout: main content + sticky sidebar context */
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 340px;
-      gap: 28px;
-      align-items: start;
-    }
-    .layout > main { min-width: 0; }
-    .sidebar {
-      position: sticky;
-      top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .sidebar .card { padding: 22px; }
-
-    /* On desktop, screen content gets wider product cards */
-    .group-body { grid-template-columns: 1fr 1fr 1fr; }
-    .product:nth-child(2n+1) { border-left: 1px solid var(--border); }
-    .product:nth-child(3n+1) { border-left: 0; }
-    .product:nth-child(1), .product:nth-child(2), .product:nth-child(3) { border-top: 0; }
-
-    .stats { gap: 16px; }
-
-    /* Sticky CTA becomes inline on desktop (sidebar has its own) */
-    .sticky-cta { position: static; }
-  }
-  @media (max-width: 1079.98px) {
-    .sidebar { display: none; }
-  }
+  /* hide marketing/app based on mode */
+  body[data-mode="marketing"] .app { display: none; }
+  body[data-mode="marketing"] .mobile-tabbar { display: none; }
+  body[data-mode="app"] .marketing { display: none; }
 </style>
 </head>
-<body>
-<div class="app">
+<body data-mode="marketing">
 
-  <!-- ===== Header ===== -->
-  <header class="header" role="banner">
-    <div class="brand" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-    </div>
-    <nav aria-label="Primary">
-      <button class="active" type="button">Generation</button>
-      <button type="button">Rooms</button>
+<!-- ============ Top bar ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="menu-btn" id="openDrawer" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <a class="logo" href="#" data-mode="marketing">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </span>
+      <span class="logo-name">Eleganza</span>
+    </a>
+    <nav class="topnav" aria-label="Primary">
+      <button data-mode="marketing" data-anchor="hero" class="active">Home</button>
+      <button data-mode="marketing" data-anchor="solution">Solution</button>
+      <button data-mode="marketing" data-anchor="pricing">Pricing</button>
+      <button data-mode="app">App demo</button>
     </nav>
     <div class="spacer"></div>
-    <button class="icon-btn" type="button" aria-label="New project">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-    </button>
-    <button class="icon-btn" type="button" aria-label="Profile">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
-    </button>
-  </header>
+    <button class="ghost" type="button">Sign in</button>
+    <button class="btn btn-primary" type="button" data-mode="app">Try for free</button>
+  </div>
+</header>
 
-  <!-- ===== Stepper ===== -->
-  <div class="stepper" id="stepper" role="navigation" aria-label="Progress">
-    <div class="step current" data-go="1"><div class="step-dot">1</div><div class="step-label">Upload</div></div>
-    <div class="step-bar"></div>
-    <div class="step" data-go="2"><div class="step-dot">2</div><div class="step-label">Analyze</div></div>
-    <div class="step-bar"></div>
-    <div class="step" data-go="3"><div class="step-dot">3</div><div class="step-label">Select</div></div>
-    <div class="step-bar"></div>
-    <div class="step" data-go="5"><div class="step-dot">4</div><div class="step-label">Generate</div></div>
+<!-- ============ Marketing landing ============ -->
+<main class="marketing">
+
+  <section class="section hero" id="hero">
+    <span class="eyebrow">✦ For furniture showrooms</span>
+    <h1>Sell more from <em>every</em> render you send.</h1>
+    <p>Upload an interior render. Eleganza recognizes every object and matches it to your brand catalogs in seconds. Send protected specifications to clients and track every interaction.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary btn-lg" type="button" data-mode="app">
+        Start free trial
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+      <button class="btn btn-lg" type="button" data-mode="marketing" data-anchor="solution">See how it works</button>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <span class="marker">1</span>
+      <span class="marker">2</span>
+      <span class="marker">3</span>
+      <span class="marker">+</span>
+    </div>
+  </section>
+
+  <div class="brands">
+    <div class="brands-inner">
+      <span>Cassina</span><span>Flexform</span><span>Minotti</span><span>Poliform</span><span>B&amp;B Italia</span><span>Molteni&amp;C</span>
+    </div>
   </div>
 
-  <!-- ===== Two-column layout (active only on desktop) ===== -->
-  <div class="layout">
-  <main>
-
-  <!-- ===== Screen 1 · Upload ===== -->
-  <section class="screen active" data-step="1" aria-label="Upload">
-    <div class="twin">
-      <div class="card">
-        <h2>Upload a room photo</h2>
-        <div class="dropzone" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5-6 6-3-3-4 4"/></svg>
+  <section class="section" id="pains">
+    <div class="section-eyebrow">Dealer pain points</div>
+    <h2 class="section-title">Where your <em>margin</em> quietly disappears.</h2>
+    <p class="section-lead">Three reasons why showrooms close 30–40% fewer deals than they could — and how Eleganza closes the gap.</p>
+    <div class="pain-grid">
+      <article class="pain">
+        <div class="pain-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v6c0 5-4 9-9 11-5-2-9-6-9-11V7z"/><path d="M9 12l2 2 4-4"/></svg>
         </div>
-        <p class="sub">AI will detect furniture and suggest matching products from partner stores</p>
-        <div class="upload-actions">
-          <button class="btn" type="button" id="openCamera">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            Camera
-          </button>
-          <label class="btn" for="fileInput">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5-6 6-3-3-4 4"/></svg>
-            Gallery
+        <h3>Specification leaks</h3>
+        <p>Clients forward your selection to competitors offering the same products at lower prices.</p>
+        <div class="stat"><b>−€48k</b>average annual loss per showroom</div>
+      </article>
+      <article class="pain">
+        <div class="pain-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Hours of manual matching</h3>
+        <p>Without AI, your designer spends 3–6 hours selecting products from PDF catalogs for every proposal.</p>
+        <div class="stat"><b>−18 h</b>per project, on average</div>
+      </article>
+      <article class="pain">
+        <div class="pain-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3>Zero visibility on clients</h3>
+        <p>You have no way to know who opened the spec, who approved a variant, or who is hesitating.</p>
+        <div class="stat"><b>0 %</b>activity insight today</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="solution">
+    <div class="section-eyebrow">The Eleganza workflow</div>
+    <h2 class="section-title">From render to <em>signed deal</em> in five steps.</h2>
+    <p class="section-lead">A guided pipeline tuned for showrooms working with premium brands. No CAD, no plugins, no training — just a render and a click.</p>
+    <div class="workflow-grid">
+      <div class="step-card"><div class="num">1</div><h3>Upload render</h3><p>Drop any interior visualization. JPG, PNG, WebP up to 20 MB.</p></div>
+      <div class="step-card"><div class="num">2</div><h3>AI detects objects</h3><p>Sofas, lamps, tables, rugs — every detected object becomes a node.</p></div>
+      <div class="step-card"><div class="num">3</div><h3>Match products</h3><p>From your connected brand catalogs, ranked by visual similarity.</p></div>
+      <div class="step-card"><div class="num">4</div><h3>Build variants</h3><p>Minimalist, Classic, Optimal — three price points for the client.</p></div>
+      <div class="step-card"><div class="num">5</div><h3>Send & track</h3><p>Protected link, no downloads. Real-time activity feed for every viewer.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <div class="section-eyebrow">Pricing</div>
+    <h2 class="section-title">Pay only when you <em>generate</em>.</h2>
+    <p class="section-lead">Tokens never expire. Cancel any time. Every plan includes brand catalogs, client analytics and protected sharing.</p>
+    <div class="pricing-grid">
+      <article class="plan">
+        <h3>Free trial</h3>
+        <div class="price">€0 <small>20 tokens</small></div>
+        <p class="desc">Enough for 3–4 complete projects. No credit card required.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>20 generation tokens</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>2 brand catalogs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Basic matching</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>1 user</li>
+        </ul>
+        <button class="btn" type="button" data-mode="app">Start free</button>
+      </article>
+      <article class="plan featured">
+        <span class="badge">Most popular</span>
+        <h3>Pro Studio</h3>
+        <div class="price">€149 <small>/month</small></div>
+        <p class="desc">For active showrooms running 10–20 client projects per month.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>100 tokens / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>All brand catalogs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Variants &amp; alternatives</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Client activity tracking</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Protected sharing links</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Up to 3 team seats</li>
+        </ul>
+        <button class="btn btn-primary" type="button" data-mode="app">Start 14-day trial</button>
+      </article>
+      <article class="plan">
+        <h3>Premium</h3>
+        <div class="price">€499 <small>/month</small></div>
+        <p class="desc">For multi-showroom networks with dedicated success management.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>500 tokens / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Unlimited team seats</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Custom brand catalogs</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>White-label client portal</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Dedicated account manager</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>SLA &amp; priority support</li>
+        </ul>
+        <button class="btn" type="button">Talk to sales</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="section cta-strip">
+    <h2>Try Eleganza on a <em>real</em> render.</h2>
+    <p>You'll have a full client-ready specification in under three minutes.</p>
+    <button class="btn btn-primary btn-lg" type="button" data-mode="app">
+      Open the demo
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </button>
+  </section>
+
+  <footer class="foot">
+    © 2026 Eleganza · Made for furniture showrooms · <a href="#">Privacy</a> · <a href="#">Terms</a>
+  </footer>
+</main>
+
+<!-- ============ App shell ============ -->
+<div class="app">
+  <div class="app-layout">
+
+    <aside class="sidebar" aria-label="App nav">
+      <h4>Workspace</h4>
+      <button class="nav-item active" data-screen="projects">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Projects
+        <span class="num">7</span>
+      </button>
+      <button class="nav-item" data-screen="upload">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        New project
+      </button>
+      <h4>Active project</h4>
+      <button class="nav-item" data-screen="detection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Detected objects
+        <span class="num">24</span>
+      </button>
+      <button class="nav-item" data-screen="matching">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>
+        Product matching
+      </button>
+      <button class="nav-item" data-screen="spec">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+        Specification
+      </button>
+      <button class="nav-item" data-screen="activity">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        Client activity
+        <span class="num">3</span>
+      </button>
+      <h4>Account</h4>
+      <button class="nav-item" data-screen="billing">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        Subscription
+      </button>
+      <button class="nav-item" data-screen="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33 1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82 1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Showroom settings
+      </button>
+    </aside>
+
+    <main>
+      <!-- ===== Projects ===== -->
+      <section class="screen active" data-screen="projects">
+        <div class="screen-head">
+          <h1>Projects dashboard</h1>
+          <div class="actions">
+            <button class="btn">Export</button>
+            <button class="btn btn-primary" data-screen-go="upload">+ New project</button>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="label">Total projects</div><div class="val">7</div><div class="delta">+2 this week</div></div>
+          <div class="stat-card"><div class="label">Avg deal size</div><div class="val">€32k</div><div class="delta">+12% MoM</div></div>
+          <div class="stat-card"><div class="label">Approval rate</div><div class="val">68%</div><div class="delta">+5 pp</div></div>
+          <div class="stat-card"><div class="label">Tokens left</div><div class="val">82</div><div class="delta neutral">/ 100</div></div>
+        </div>
+        <div class="filter-bar">
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search projects…">
+          </div>
+          <button class="chip active">All · 7</button>
+          <button class="chip">Pending · 2</button>
+          <button class="chip">Approved · 3</button>
+        </div>
+        <div class="projects-grid" id="projectsGrid"></div>
+      </section>
+
+      <!-- ===== Upload ===== -->
+      <section class="screen" data-screen="upload">
+        <div class="screen-head"><h1>New project</h1></div>
+        <div class="upload-grid">
+          <label class="dropzone-big" for="renderInput">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5-6 6-3-3-4 4"/></svg></div>
+            <h3>Upload an interior render</h3>
+            <p>JPG · PNG · WebP · max 20 MB. AI will recognize all objects.</p>
+            <span class="btn btn-primary">Choose file</span>
+            <input id="renderInput" type="file" accept="image/*" hidden>
           </label>
-          <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+          <div class="card" style="display:flex;flex-direction:column;gap:14px">
+            <div class="field">
+              <label>Project name</label>
+              <input type="text" placeholder="e.g. Rossi Client Living Room">
+            </div>
+            <div class="field">
+              <label>Room type</label>
+              <select>
+                <option>Living room</option><option>Bedroom</option><option>Kitchen</option><option>Bathroom</option><option>Office</option><option>Lobby</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Brand catalogs</label>
+              <div class="chip-row">
+                <button class="chip brand active">Cassina</button>
+                <button class="chip brand active">Flexform</button>
+                <button class="chip brand active">Minotti</button>
+                <button class="chip brand">Poliform</button>
+                <button class="chip brand">B&amp;B Italia</button>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <div class="label">Include alternatives <small>Suggest 2 cheaper options per detected object</small></div>
+              <div class="switch on" role="switch" aria-checked="true"></div>
+            </div>
+            <button class="btn btn-primary" data-screen-go="detection" style="padding:14px;margin-top:6px">Run AI analysis · 1 token</button>
+          </div>
         </div>
-        <div class="meta">JPEG, PNG, WebP · max 20MB</div>
-        <div class="toggle-row">
-          <div class="switch" id="extendedSearch" role="switch" aria-checked="false" tabindex="0"></div>
-          <span>Extended search</span>
-          <span class="info-dot" aria-label="Info">i</span>
+      </section>
+
+      <!-- ===== Detection ===== -->
+      <section class="screen" data-screen="detection">
+        <div class="screen-head">
+          <h1>Detected objects</h1>
+          <div class="actions">
+            <button class="btn">Re-run</button>
+            <button class="btn btn-primary" data-screen-go="matching">Continue to matching →</button>
+          </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="section-head">
-          <h3>Search in stores</h3>
-          <button type="button">Select all</button>
+        <div class="image-stage">
+          <div class="toolbar">
+            <button class="iconbtn" aria-label="Reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button>
+            <button class="iconbtn" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+          </div>
+          <div class="marker" style="left:24%;top:48%">1</div>
+          <div class="marker" style="left:42%;top:62%">2</div>
+          <div class="marker" style="left:60%;top:50%">3</div>
+          <div class="marker" style="left:74%;top:42%">4</div>
+          <div class="marker" style="left:50%;top:78%">5</div>
+          <div class="marker" style="left:30%;top:30%">+</div>
+          <div class="corner-tags">
+            <span class="tag">living_room</span>
+            <span class="tag">modern</span>
+            <span class="tag">minimalism</span>
+            <span class="tag">24 objects · confidence 96%</span>
+          </div>
         </div>
-        <div class="chip-row" role="list">
-          <button class="chip active" type="button">Blest</button>
-          <button class="chip" type="button">Agromat</button>
-          <button class="chip" type="button">Poltrona</button>
-          <button class="chip" type="button">Kis</button>
-          <button class="chip" type="button">Tanguay</button>
+        <div class="detected-list" id="detectedList"></div>
+      </section>
+
+      <!-- ===== Matching ===== -->
+      <section class="screen" data-screen="matching">
+        <div class="screen-head">
+          <h1>Product matching</h1>
+          <div class="actions">
+            <button class="btn">By relevance ↓</button>
+            <button class="btn btn-primary" data-screen-go="spec">Build specification →</button>
+          </div>
         </div>
-        <h3 style="margin:20px 2px 10px; font-size:14px; font-weight:500; color:var(--text-2)">How it works</h3>
-        <ol class="howlist" style="list-style:none; padding:0; margin:0;">
-          <li class="howitem"><span class="num">1</span> Upload room photo</li>
-          <li class="howitem"><span class="num">2</span> AI detects furniture</li>
-          <li class="howitem"><span class="num">3</span> Select matching products</li>
-          <li class="howitem"><span class="num">4</span> Generate visualization</li>
-        </ol>
-      </div>
-    </div>
-
-    <button class="btn btn-primary" style="width:100%;padding:16px" type="button" data-next="2">
-      Start analysis
-    </button>
-  </section>
-
-  <!-- ===== Screen 2 · Analyzing ===== -->
-  <section class="screen" data-step="2" aria-label="Analyzing">
-    <div class="card" style="padding:18px">
-      <div class="analyze-stage">
-        <svg class="sparkle" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>
-        <div class="analyze-title">Classifying furniture…</div>
-        <div class="analyze-step" id="analyzeStep">Step 2 of 3</div>
-      </div>
-      <div class="progress">
-        <div class="progress-head">
-          <span>Classifying furniture</span>
-          <span id="analyzePct">60%</span>
+        <div class="match-tabs">
+          <button class="active">All · 24</button>
+          <button>Cassina · 8</button>
+          <button>Flexform · 6</button>
+          <button>Minotti · 5</button>
+          <button>Poliform · 5</button>
         </div>
-        <div class="progress-bar"><span id="analyzeBar" style="width:60%"></span></div>
-      </div>
-    </div>
+        <div class="match-grid" id="matchGrid"></div>
+      </section>
 
-    <div class="status-row">
-      <div class="status-chip done"><div class="t">Detecting objects</div><div class="s">✓ Done</div></div>
-      <div class="status-chip active"><div class="t">Classifying furniture</div><div class="s">✓ Done</div></div>
-      <div class="status-chip"><div class="t">Matching products</div><div class="s">Pending</div></div>
-    </div>
-
-    <button class="btn" type="button" style="width:100%;padding:16px" data-next="1">Cancel</button>
-  </section>
-
-  <!-- ===== Screen 3 · Results ===== -->
-  <section class="screen" data-step="3" aria-label="Select products">
-    <div class="image-stage">
-      <button class="toolbtn" type="button" aria-label="View">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l4-5h10l4 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 9h18"/></svg>
-      </button>
-      <div class="marker" style="left:28%; top:40%">+</div>
-      <div class="marker" style="left:56%; top:55%">•</div>
-      <div class="marker" style="left:72%; top:38%">•</div>
-      <div class="marker" style="left:85%; top:30%">•</div>
-      <div class="tags">
-        <span class="tag">living_room</span>
-        <span class="tag">modern</span>
-        <span class="tag">minimalism</span>
-      </div>
-    </div>
-
-    <div class="chip-row">
-      <button class="chip gold active" type="button">All · 24</button>
-      <button class="chip" type="button">Blest</button>
-      <button class="chip" type="button">Poltrona</button>
-      <button class="chip" type="button">Tanguay · 5</button>
-    </div>
-
-    <div class="toggles">
-      <label class="toggle"><span class="switch on" role="switch" aria-checked="true"></span>All categories</label>
-      <label class="toggle"><span class="switch on" role="switch" aria-checked="true"></span>Pro mode</label>
-    </div>
-
-    <div class="group" data-group="sofa">
-      <div class="group-head">
-        <div class="ico" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v5"/><path d="M2 18h20v2a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1h-12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M7 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/></svg>
+      <!-- ===== Spec preview ===== -->
+      <section class="screen" data-screen="spec">
+        <div class="screen-head">
+          <h1>Specification preview</h1>
+          <div class="actions">
+            <button class="btn">Export PDF</button>
+            <button class="btn btn-primary" data-screen-go="activity">Send to client →</button>
+          </div>
         </div>
-        <div class="title"><b>Sofa</b><span><span class="selcount">1</span> selected</span></div>
-        <div class="badge selcount">1</div>
-        <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></div>
-      </div>
-      <div class="group-body"></div>
-    </div>
-
-    <div class="group" data-group="coffee-table">
-      <div class="group-head">
-        <div class="ico" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18"/><path d="M5 10v8"/><path d="M19 10v8"/><path d="M3 7l3-3h12l3 3"/></svg>
+        <div class="protect-card">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="text">
+            <b>Protected sharing</b>
+            <span>Send the client a private link — no downloads, no leaks. Brand and price visibility configurable per viewer.</span>
+          </div>
+          <div class="switch on" role="switch" aria-checked="true"></div>
         </div>
-        <div class="title"><b>Coffee Table</b><span><span class="selcount">1</span> selected</span></div>
-        <div class="badge selcount">1</div>
-        <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></div>
-      </div>
-      <div class="group-body"></div>
-    </div>
-
-    <div class="group collapsed" data-group="chair">
-      <div class="group-head">
-        <div class="ico" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20v-6"/><path d="M18 20v-6"/><path d="M5 14h14"/><path d="M7 14V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v9"/></svg>
+        <div class="variants">
+          <article class="variant"><h3>Minimalist</h3><div class="price">€18 200</div><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Cassina Maralunga sofa</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Poliform Bristol table</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Floor lamp · pillows</li></ul><button class="btn">Preview</button></article>
+          <article class="variant featured"><h3>Optimal</h3><div class="price">€32 100</div><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Cassina Utrecht armchair</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Flexform Soft Dream sofa</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Poliform Mondrian table</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Decorative lighting set</li></ul><button class="btn btn-primary">Preview</button></article>
+          <article class="variant"><h3>Classic</h3><div class="price">€48 700</div><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Minotti Hamilton sofa</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Cassina Utrecht armchair pair</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Premium pillow line</li></ul><button class="btn">Preview</button></article>
         </div>
-        <div class="title"><b>Chair</b><span><span class="selcount">1</span> selected</span></div>
-        <div class="badge selcount">1</div>
-        <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></div>
-      </div>
-      <div class="group-body"></div>
-    </div>
+      </section>
 
-    <div class="group collapsed" data-group="carpet">
-      <div class="group-head">
-        <div class="ico" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 12h10M7 15h10"/></svg>
+      <!-- ===== Client activity ===== -->
+      <section class="screen" data-screen="activity">
+        <div class="screen-head">
+          <h1>Client activity</h1>
+          <div class="actions">
+            <span class="pill shared">Rossi Client Living Room</span>
+            <button class="btn">Send reminder</button>
+          </div>
         </div>
-        <div class="title"><b>Carpet</b><span><span class="selcount">1</span> selected</span></div>
-        <div class="badge selcount">1</div>
-        <div class="caret"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></div>
-      </div>
-      <div class="group-body"></div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="label">Views</div><div class="val">14</div><div class="delta">+4 today</div></div>
+          <div class="stat-card"><div class="label">Time on page</div><div class="val">6m 18s</div><div class="delta">avg</div></div>
+          <div class="stat-card"><div class="label">Variants opened</div><div class="val">3 / 3</div><div class="delta neutral">all viewed</div></div>
+          <div class="stat-card"><div class="label">Status</div><div class="val" style="font-size:22px">Approved</div><div class="delta">Optimal variant</div></div>
+        </div>
+        <div class="timeline">
+          <div class="event"><div class="ev-ico green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div><div class="body"><b>Approved 'Optimal' variant</b><span>Maria Rossi · Designer</span><div class="when">2 hours ago</div></div></div>
+          <div class="event"><div class="ev-ico gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="body"><b>Left a comment on the Cassina Maralunga sofa</b><span>"Can we see this in olive bouclé?"</span><div class="when">3 hours ago</div></div></div>
+          <div class="event"><div class="ev-ico blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="body"><b>Viewed 'Optimal' variant</b><span>Spent 4m 12s exploring 6 products</span><div class="when">4 hours ago</div></div></div>
+          <div class="event"><div class="ev-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div><div class="body"><b>Client opened specification</b><span>From iPhone · Milan, Italy</span><div class="when">Yesterday, 18:42</div></div></div>
+        </div>
+      </section>
+
+      <!-- ===== Billing ===== -->
+      <section class="screen" data-screen="billing">
+        <div class="screen-head">
+          <h1>Subscription</h1>
+          <div class="actions"><button class="btn">Manage payment</button></div>
+        </div>
+        <div class="billing-grid">
+          <div class="balance-card">
+            <div class="label">Tokens balance</div>
+            <div class="num">82 <small>/ 100 this month</small></div>
+            <div class="progress"><span style="width:18%"></span></div>
+            <div class="progress-meta"><span>18 used</span><span>Resets in 14 days</span></div>
+            <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+              <button class="btn btn-primary">Buy more tokens</button>
+              <button class="btn">Upgrade plan</button>
+            </div>
+          </div>
+          <div class="card">
+            <div style="font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.6px">Current plan</div>
+            <div style="font-family:var(--font-display);font-size:26px;font-weight:500;margin:6px 0 4px">Pro Studio</div>
+            <div style="color:var(--text-2);font-size:14px">€149 / month · renews May 14</div>
+            <hr style="border:0;border-top:1px solid var(--border);margin:18px 0">
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--text-2)">
+              <li>✓ 100 tokens / month</li>
+              <li>✓ All brand catalogs</li>
+              <li>✓ Variants &amp; alternatives</li>
+              <li>✓ Client activity tracking</li>
+              <li>✓ Up to 3 team seats</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Settings ===== -->
+      <section class="screen" data-screen="settings">
+        <div class="screen-head"><h1>Showroom settings</h1></div>
+        <div class="card" style="display:flex;flex-direction:column;gap:14px;max-width:560px">
+          <div class="field"><label>Showroom name</label><input type="text" value="Studio Milano"></div>
+          <div class="field"><label>Country</label><select><option>Italy</option><option>Germany</option><option>France</option><option>Ukraine</option></select></div>
+          <div class="field"><label>Default currency</label><select><option>EUR €</option><option>USD $</option></select></div>
+          <div class="toggle-row"><div class="label">Show prices to clients <small>By default in shared specifications</small></div><div class="switch on"></div></div>
+          <div class="toggle-row"><div class="label">Allow PDF export <small>Clients can download the spec</small></div><div class="switch"></div></div>
+          <button class="btn btn-primary" style="align-self:flex-start">Save changes</button>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- ============ Mobile bottom nav ============ -->
+<nav class="mobile-tabbar" aria-label="App tabs">
+  <button data-screen="projects" class="active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Projects
+  </button>
+  <button data-screen="upload">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    New
+  </button>
+  <button data-screen="matching">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>
+    Match
+  </button>
+  <button data-screen="activity">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    Activity
+  </button>
+  <button data-screen="billing">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+    Plan
+  </button>
+</nav>
+
+<!-- Mobile drawer (marketing nav) -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="logo-name">Eleganza</span></div>
+      <button class="menu-btn" id="closeDrawer">×</button>
     </div>
-
-    <div class="sticky-cta">
-      <button class="btn btn-white" type="button" data-next="4">
-        Continue with selections <span class="count-badge" id="totalCount">4</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ===== Screen 4 · Selection summary ===== -->
-  <section class="screen" data-step="4" aria-label="Your selection">
-    <div class="ornament">✦ YOUR SELECTION ✦</div>
-    <button class="add-more" type="button" data-next="3">+ Add more products</button>
-    <div class="stats">
-      <div class="stat"><b id="statProducts">4</b><span>Products</span></div>
-      <div class="stat"><b id="statCategories">3</b><span>Categories</span></div>
-      <div class="stat accent"><b id="statMatch">42%</b><span>Avg match</span></div>
-    </div>
-
-    <div id="selectionList" style="display:flex;flex-direction:column;gap:10px"></div>
-
-    <div class="ornament">✦ REIMAGINE YOUR SPACE ✦</div>
-    <button class="generate-cta" type="button" data-next="5">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/></svg>
-      Generate visualization
-    </button>
-  </section>
-
-  <!-- ===== Screen 5 · Generate ===== -->
-  <section class="screen" data-step="5" aria-label="Visualization ready">
-    <div class="ready-stage">
-      <div class="check-big">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-      </div>
-      <div style="font-weight:600;font-size:17px">Visualization ready</div>
-    </div>
-
-    <div class="action-grid">
-      <button class="btn" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
-        Full preview
-      </button>
-      <button class="btn" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Save
-      </button>
-      <button class="btn" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-        Share
-      </button>
-      <button class="btn" type="button" data-next="2">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
-        Retry
-      </button>
-    </div>
-
-    <div class="ornament">✦ COMPARE ✦</div>
-    <div class="compare-grid">
-      <div class="compare">Before</div>
-      <div class="compare">After</div>
-    </div>
-
-    <button class="btn btn-white" type="button" style="padding:16px" data-next="1">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      Start a new project
-    </button>
-  </section>
-
-  </main>
-
-  <!-- ===== Desktop sidebar ===== -->
-  <aside class="sidebar" aria-label="Context">
-    <div class="card">
-      <h3 style="margin:0 0 10px;font-size:13px;font-weight:500;color:var(--text-2);letter-spacing:.3px;text-transform:uppercase">Your project</h3>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-2)"><span>Room</span><span style="color:var(--text)">Living room</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-2)"><span>Style</span><span style="color:var(--text)">Modern · Minimal</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-2)"><span>Stores</span><span style="color:var(--text)">5 active</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-2)"><span>Selected</span><span style="color:var(--text)" id="sidebarCount">4 items</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <h3 style="margin:0 0 12px;font-size:13px;font-weight:500;color:var(--text-2);letter-spacing:.3px;text-transform:uppercase">Tips</h3>
-      <p class="sub" style="text-align:left;margin:0">Upload a well-lit, uncluttered photo of a single room. AI works best with wide-angle shots that show floor, walls and key furniture.</p>
-    </div>
-  </aside>
+    <button class="nav-item" data-mode="marketing" data-anchor="hero">Home</button>
+    <button class="nav-item" data-mode="marketing" data-anchor="solution">Solution</button>
+    <button class="nav-item" data-mode="marketing" data-anchor="pricing">Pricing</button>
+    <button class="nav-item" data-mode="app">App demo</button>
+    <button class="btn btn-primary" style="margin-top:14px" data-mode="app">Start free trial</button>
   </div>
 </div>
 
 <script>
 (() => {
-  // ===== Data =====
-  const PRODUCTS = {
-    sofa: [
-      { id:"sf1", name:"Blisscape Sofa", sku:"PF-SF-21", match:49, selected:true },
-      { id:"sf2", name:"Come Together",  sku:"PF-SF-07", match:49 },
-      { id:"sf3", name:"Aura",           sku:"BX-SF-02", match:45 },
-    ],
-    "coffee-table": [
-      { id:"ct1", name:"Mirage", sku:"GI-CT-08", match:42, selected:true },
-      { id:"ct2", name:"Baba",   sku:"PLF-CT-01", match:39 },
-      { id:"ct3", name:"Nara",   sku:"PLF-CT-11", match:38 },
-    ],
-    chair: [
-      { id:"ch1", name:"Dining Chair", sku:"BX-CH-12", match:37, selected:true },
-      { id:"ch2", name:"Halo",         sku:"PF-CH-03", match:33 },
-    ],
-    carpet: [
-      { id:"cp1", name:"Faira Area Rug", sku:"GI-CP-04", match:35, selected:true },
-      { id:"cp2", name:"Dune",           sku:"PLF-CP-09", match:30 },
-    ],
-  };
-  const CAT_LABEL = { "sofa":"Sofa", "coffee-table":"Coffee Table", "chair":"Chair", "carpet":"Carpet" };
-
-  // ===== Helpers =====
   const $ = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => [...r.querySelectorAll(s)];
 
-  // ===== Render product rows =====
-  function renderGroups() {
-    Object.entries(PRODUCTS).forEach(([key, items]) => {
-      const body = $(`.group[data-group="${key}"] .group-body`);
-      if (!body) return;
-      body.innerHTML = items.map(p => `
-        <div class="product${p.selected ? " selected" : ""}" data-id="${p.id}" data-cat="${key}">
-          <div class="product-thumb">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m3 14 5-4 4 3 4-5 5 6"/></svg>
-          </div>
-          <div class="product-info">
-            <b>${p.name}</b>
-            <span class="sku">${p.sku}</span>
-            <div class="match-bar"><div class="track"><span style="width:${p.match}%"></span></div><span class="pct">${p.match}%</span></div>
-          </div>
-          <div class="check">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  // ===== Data =====
+  const PROJECTS = [
+    { name:"Rossi Client Living Room", room:"Living Room · Milan", status:"shared", date:"Apr 12", value:"€32k", marker:"60%,55%" },
+    { name:"Hotel Adriatico Lobby",   room:"Lobby · Venice",       status:"approved", date:"Apr 10", value:"€124k", marker:"40%,45%" },
+    { name:"Penthouse Milano Kitchen",room:"Kitchen · Milan",      status:"pending",  date:"Apr 09", value:"€48k", marker:"55%,60%" },
+    { name:"Loft Berlin Bathroom",    room:"Bathroom · Berlin",    status:"approved", date:"Apr 07", value:"€18k", marker:"45%,50%" },
+    { name:"Studio Zen Office",       room:"Office · Como",        status:"pending",  date:"Apr 05", value:"€26k", marker:"50%,52%" },
+    { name:"Villa Medici Bedroom",    room:"Bedroom · Florence",   status:"approved", date:"Apr 02", value:"€64k", marker:"58%,48%" },
+    { name:"Interior Design Studio Milano", room:"Studio · Milan", status:"draft",    date:"Mar 30", value:"—",    marker:"50%,50%" },
+  ];
+  const STATUS_LABEL = { draft:"Draft", pending:"Pending", approved:"Approved", shared:"Shared" };
+
+  const DETECTED = [
+    ["1","Sofa, 3-seat",94], ["2","Coffee table",92], ["3","Armchair",90],
+    ["4","Floor lamp",88], ["5","Decorative pillows ×4",87], ["6","Side table",85],
+    ["7","Area rug",83], ["8","Wall art",81], ["9","Pendant lamp",79],
+    ["10","Curtains",77], ["11","Bookshelf",75], ["12","TV unit",73],
+    ["13","Console",71], ["14","Plant pot",69], ["15","Mirror",67],
+    ["16","Vase",65], ["17","Throw blanket",63], ["18","Tray",61],
+    ["19","Sculpture",59], ["20","Rug ×2",57], ["21","Stool",55],
+    ["22","Books",53], ["23","Candle holders",51], ["24","Fruit bowl",49],
+  ];
+
+  const PRODUCTS = [
+    { brand:"Cassina",  name:"Maralunga Sofa",   price:"€8 400",  match:96, sel:true  },
+    { brand:"Cassina",  name:"Utrecht Armchair", price:"€4 100",  match:92, sel:true  },
+    { brand:"Flexform", name:"Soft Dream Sofa",  price:"€7 800",  match:90, sel:true  },
+    { brand:"Flexform", name:"Magnum Sofa",      price:"€9 200",  match:84              },
+    { brand:"Minotti",  name:"Hamilton Sofa",    price:"€11 500", match:82              },
+    { brand:"Minotti",  name:"Andes Coffee Tbl", price:"€2 600",  match:79              },
+    { brand:"Poliform", name:"Bristol Table",    price:"€3 200",  match:88, sel:true  },
+    { brand:"Poliform", name:"Mondrian Table",   price:"€2 850",  match:75              },
+    { brand:"Cassina",  name:"Refolo Daybed",    price:"€6 700",  match:72              },
+  ];
+
+  function renderProjects() {
+    $("#projectsGrid").innerHTML = PROJECTS.map(p => {
+      const [mx,my] = p.marker.split(",");
+      return `<article class="project">
+        <div class="project-cover"><div class="marker" style="left:${mx};top:${my}"></div></div>
+        <div class="project-body">
+          <h3>${p.name}</h3>
+          <div class="meta">${p.room} · ${p.date}</div>
+          <div class="row">
+            <span class="pill ${p.status}">${STATUS_LABEL[p.status]}</span>
+            <span style="font-family:var(--font-display);font-size:18px">${p.value}</span>
           </div>
         </div>
-      `).join("");
-    });
-    updateCounts();
-    renderSelection();
+      </article>`;
+    }).join("");
   }
 
-  function updateCounts() {
-    let total = 0;
-    Object.entries(PRODUCTS).forEach(([key, items]) => {
-      const n = items.filter(p => p.selected).length;
-      total += n;
-      const g = $(`.group[data-group="${key}"]`);
-      if (g) g.querySelectorAll(".selcount").forEach(el => el.textContent = n);
-    });
-    $("#totalCount").textContent = total;
-    $("#sidebarCount").textContent = total + " items";
-    $("#statProducts").textContent = total;
-    const catsUsed = Object.entries(PRODUCTS).filter(([,items]) => items.some(p=>p.selected)).length;
-    $("#statCategories").textContent = catsUsed;
-    const sel = Object.values(PRODUCTS).flat().filter(p=>p.selected);
-    const avg = sel.length ? Math.round(sel.reduce((a,p)=>a+p.match,0)/sel.length) : 0;
-    $("#statMatch").textContent = avg + "%";
+  function renderDetected() {
+    $("#detectedList").innerHTML = DETECTED.map(([n,name,conf]) =>
+      `<div class="detected-item">
+        <div class="num-circle">${n}</div>
+        <div><b>${name}</b><span>Confidence ${conf}%</span></div>
+        <div class="conf">●</div>
+      </div>`
+    ).join("");
   }
 
-  function renderSelection() {
-    const list = $("#selectionList");
-    const selected = Object.entries(PRODUCTS).flatMap(([key, items]) =>
-      items.filter(p => p.selected).map(p => ({ ...p, cat:key }))
-    );
-    list.innerHTML = selected.map(p => `
-      <div class="selection-card" data-id="${p.id}" data-cat="${p.cat}">
+  function renderProducts() {
+    $("#matchGrid").innerHTML = PRODUCTS.map((p,i) =>
+      `<article class="product${p.sel?" selected":""}" data-i="${i}">
         <div class="thumb">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m3 14 5-4 4 3 4-5 5 6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m3 14 5-4 4 3 4-5 5 6"/></svg>
+          <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div>
         </div>
-        <div>
-          <div class="cat">${CAT_LABEL[p.cat]}</div>
+        <div class="info">
+          <div class="brand-tag">${p.brand}</div>
           <b>${p.name}</b>
-          <div class="pct">Match: ${p.match}%</div>
+          <div class="price">${p.price}</div>
+          <div class="match"><div class="track"><span style="width:${p.match}%"></span></div><span class="pct">${p.match}%</span></div>
         </div>
-        <button class="remove-btn" type="button" aria-label="Remove">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-    `).join("");
+      </article>`
+    ).join("");
   }
 
-  // ===== Interactions =====
-  // product toggle
+  function setMode(m) {
+    document.body.dataset.mode = m;
+    if (m === "app") window.scrollTo({ top: 0, behavior: "auto" });
+  }
+
+  function goScreen(name) {
+    $$(".screen").forEach(s => s.classList.toggle("active", s.dataset.screen === name));
+    $$(".sidebar .nav-item").forEach(b => b.classList.toggle("active", b.dataset.screen === name));
+    $$(".mobile-tabbar button").forEach(b => b.classList.toggle("active", b.dataset.screen === name));
+    if (window.scrollY > 200) window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   document.addEventListener("click", e => {
+    const mb = e.target.closest("[data-mode]");
+    if (mb && mb.dataset.mode) {
+      setMode(mb.dataset.mode);
+      const a = mb.dataset.anchor;
+      if (a) { const el = document.getElementById(a); if (el) el.scrollIntoView({behavior:"smooth"}); }
+      drawer.classList.remove("open");
+      $$(".topnav button").forEach(b => b.classList.toggle("active", b === mb));
+      e.preventDefault();
+      return;
+    }
+    const sg = e.target.closest("[data-screen-go]");
+    if (sg) { goScreen(sg.dataset.screenGo); return; }
+    const sb = e.target.closest("[data-screen]");
+    if (sb) { setMode("app"); goScreen(sb.dataset.screen); return; }
     const prod = e.target.closest(".product");
-    if (prod) {
-      const id = prod.dataset.id, cat = prod.dataset.cat;
-      const p = PRODUCTS[cat].find(x => x.id === id);
-      p.selected = !p.selected;
-      renderGroups();
-      return;
-    }
-    // remove from selection screen
-    const rm = e.target.closest(".remove-btn");
-    if (rm) {
-      const card = rm.closest(".selection-card");
-      const id = card.dataset.id, cat = card.dataset.cat;
-      const p = PRODUCTS[cat].find(x => x.id === id);
-      p.selected = false;
-      renderGroups();
-      return;
-    }
-    // group collapse
-    const head = e.target.closest(".group-head");
-    if (head) {
-      head.parentElement.classList.toggle("collapsed");
-      return;
-    }
+    if (prod) { PRODUCTS[+prod.dataset.i].sel = !PRODUCTS[+prod.dataset.i].sel; renderProducts(); return; }
+    const chip = e.target.closest(".chip");
+    if (chip && chip.parentElement.classList.contains("chip-row")) { chip.classList.toggle("active"); return; }
+    const sw = e.target.closest(".switch");
+    if (sw) { sw.classList.toggle("on"); sw.setAttribute("aria-checked", sw.classList.contains("on")); return; }
+    const tab = e.target.closest(".match-tabs button");
+    if (tab) { tab.parentElement.querySelectorAll("button").forEach(b => b.classList.remove("active")); tab.classList.add("active"); return; }
   });
 
-  // Chip rows (single-select within each row, except stores row which is multi)
-  $$(".chip-row").forEach(row => {
-    row.addEventListener("click", e => {
-      const chip = e.target.closest(".chip");
-      if (!chip) return;
-      if (chip.classList.contains("gold")) {
-        row.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-      } else {
-        chip.classList.toggle("active");
-      }
-    });
-  });
+  const drawer = $("#drawer");
+  $("#openDrawer").addEventListener("click", () => drawer.classList.add("open"));
+  $("#closeDrawer").addEventListener("click", () => drawer.classList.remove("open"));
+  drawer.addEventListener("click", e => { if (e.target === drawer) drawer.classList.remove("open"); });
 
-  // Switches
-  $$(".switch").forEach(s => {
-    s.addEventListener("click", () => {
-      s.classList.toggle("on");
-      s.setAttribute("aria-checked", s.classList.contains("on") ? "true" : "false");
-    });
-  });
+  const renderInput = $("#renderInput");
+  renderInput.addEventListener("change", e => { if (e.target.files.length) goScreen("detection"); });
 
-  // ===== Step navigation =====
-  const STEP_TO_PILL = { 1:1, 2:2, 3:3, 4:3, 5:4 };
-  function goto(step) {
-    $$(".screen").forEach(s => s.classList.toggle("active", s.dataset.step == step));
-    // update stepper
-    const pill = STEP_TO_PILL[step];
-    $$("#stepper .step").forEach((el, i) => {
-      el.classList.remove("current","done");
-      if (i + 1 < pill) el.classList.add("done");
-      else if (i + 1 == pill) el.classList.add("current");
-    });
-    $$("#stepper .step-bar").forEach((el, i) => {
-      el.classList.toggle("done", (i + 1) < pill);
-    });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    if (step == 2) startAnalyzing();
-  }
-
-  document.addEventListener("click", e => {
-    const next = e.target.closest("[data-next]");
-    if (next) { goto(+next.dataset.next); return; }
-    const go = e.target.closest("[data-go]");
-    if (go) { goto(+go.dataset.go); return; }
-  });
-
-  // File input → go to analyzing
-  $("#fileInput").addEventListener("change", e => {
-    if (e.target.files && e.target.files[0]) goto(2);
-  });
-  $("#openCamera").addEventListener("click", () => $("#fileInput").click());
-
-  // ===== Analyzing simulation =====
-  let analyzeTimer;
-  function startAnalyzing() {
-    clearInterval(analyzeTimer);
-    let pct = 0;
-    const bar = $("#analyzeBar"), text = $("#analyzePct"), step = $("#analyzeStep");
-    const chips = $$(".status-row .status-chip");
-    chips.forEach(c => { c.classList.remove("done","active"); });
-    chips[0].classList.add("active");
-    analyzeTimer = setInterval(() => {
-      pct += 6 + Math.random() * 4;
-      if (pct > 100) pct = 100;
-      bar.style.width = pct + "%";
-      text.textContent = Math.round(pct) + "%";
-      if (pct < 34) { step.textContent = "Step 1 of 3"; chips[0].classList.add("active"); }
-      else if (pct < 67) {
-        step.textContent = "Step 2 of 3";
-        chips[0].classList.remove("active"); chips[0].classList.add("done");
-        chips[1].classList.add("active");
-      } else {
-        step.textContent = "Step 3 of 3";
-        chips[1].classList.remove("active"); chips[1].classList.add("done");
-        chips[2].classList.add("active");
-      }
-      if (pct >= 100) {
-        clearInterval(analyzeTimer);
-        chips[2].classList.remove("active"); chips[2].classList.add("done");
-        setTimeout(() => goto(3), 600);
-      }
-    }, 220);
-  }
-
-  // Init
-  renderGroups();
+  renderProjects();
+  renderDetected();
+  renderProducts();
 })();
 </script>
 </body>
